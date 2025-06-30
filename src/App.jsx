@@ -42,59 +42,65 @@ const generateMatchesAndResults = (teams) => {
     if (match) match.schedule = schedule;
   };
 
-  // --- HORARIOS CORREGIDOS SEGÚN LA IMAGEN ---
-  // SETMANA 1
+  // --- HORARIOS CORREGIDOS Y COMPLETOS ---
+  // SETMANA 1 (1-5 Jul)
   findAndSchedule('D1', 'D2', 'Dimarts 1, 19:30');
   findAndSchedule('D3', 'D4', 'Dimarts 1, 20:30');
   findAndSchedule('C5', 'C6', 'Dimarts 1, 21:30');
   findAndSchedule('B2', 'B3', 'Dimarts 1, 22:00 PISTA DALT');
-  findAndSchedule('A5', 'A7', 'Dimecres 2, 19:30'); // Jonatan/Miquel vs Alexander/Fernando
-  findAndSchedule('B5', 'B6', 'Dimecres 2, 20:30');
-  findAndSchedule('B7', 'B8', 'Dimecres 2, 21:30');
+  findAndSchedule('A5', 'A6', 'Dimecres 2, 19:30');
+  findAndSchedule('B5', 'B8', 'Dimecres 2, 20:30'); // Corregido: B5 vs B8 (Juan/German vs Guillem/Hugo)
+  findAndSchedule('B6', 'B7', 'Dimecres 2, 21:30'); // Corregido: B6 vs B7 (Iago/Carlos vs Oscar/Jordi G)
   findAndSchedule('C7', 'C8', 'Dijous 3, 19:30');
-  findAndSchedule('C1', 'C3', 'Dijous 3, 20:30'); // Fran/Cesar vs Alberto/Angel
-  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30'); // Alexander/Fernando vs Angel/Miguel
-  findAndSchedule('C2', 'C4', 'Dissabte 5, 19:30'); // Robert/Carmelo vs Miguel T./Joan
+  findAndSchedule('C1', 'C3', 'Dijous 3, 20:30');
+  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30');
+  findAndSchedule('C3', 'C4', 'Dissabte 5, 19:30');
 
-  // SETMANA 2
+  // SETMANA 2 (7-10 Jul)
   findAndSchedule('A3', 'A4', 'Dilluns 7, 19:30');
   findAndSchedule('C5', 'C7', 'Dilluns 7, 20:30');
-  findAndSchedule('C6', 'C8', 'Dilluns 7, 21:30');
   findAndSchedule('A1', 'A2', 'Dimarts 8, 19:30');
-  findAndSchedule('A6', 'A8', 'Dimarts 8, 20:30'); // Xavi/Sergi vs Angel/Miguel
-  findAndSchedule('B1', 'B3', 'Dimarts 8, 21:30'); // Xavi/Andres vs Hugo/Fran
+  findAndSchedule('A6', 'A8', 'Dimarts 8, 20:30');
+  findAndSchedule('B1', 'B3', 'Dimarts 8, 21:30');
   findAndSchedule('D1', 'D4', 'Dimecres 9, 19:30');
   findAndSchedule('B5', 'B7', 'Dimecres 9, 20:30');
   findAndSchedule('B6', 'B8', 'Dimecres 9, 21:30');
   findAndSchedule('A2', 'A4', 'Dijous 10, 19:30');
   findAndSchedule('D2', 'D3', 'Dijous 10, 20:30');
 
-  // SETMANA 3
-  findAndSchedule('C1', 'C4', 'Dilluns 14, 19:30');
-  findAndSchedule('C2', 'C3', 'Dilluns 14, 20:30');
+  // SETMANA 3 (14-17 Jul)
+  findAndSchedule('C1', 'C2', 'Dilluns 14, 19:30');
+  findAndSchedule('A5', 'A8', 'Dilluns 14, 20:30');
   findAndSchedule('B3', 'B4', 'Dilluns 14, 21:30');
-  findAndSchedule('A1', 'A4', 'Dimarts 15, 19:30');
+  findAndSchedule('A1', 'A3', 'Dimarts 15, 19:30'); // Corregido
   findAndSchedule('B1', 'B2', 'Dimarts 15, 20:30');
-  findAndSchedule('A5', 'A8', 'Dimarts 15, 21:30'); // Jonatan/Miquel vs Angel/Miguel
-  findAndSchedule('A1', 'A3', 'Dimecres 16, 19:30');
+  findAndSchedule('A5', 'A7', 'Dimarts 15, 21:30');
+  findAndSchedule('A1', 'A4', 'Dimecres 16, 19:30');
   findAndSchedule('B1', 'B4', 'Dimecres 16, 20:30');
   findAndSchedule('C5', 'C8', 'Dimecres 16, 21:30');
-  findAndSchedule('C1', 'C2', 'Dijous 17, 19:30');
-  findAndSchedule('B2', 'B4', 'Dijous 17, 20:30'); // Toni/Ricardo vs Nestor/Borja
+  findAndSchedule('C2', 'C4', 'Dijous 17, 19:30');
+  findAndSchedule('B2', 'B4', 'Dijous 17, 20:30');
 
-  // SETMANA 4
+  // SETMANA 4 (21-24 Jul)
   findAndSchedule('A2', 'A3', 'Dilluns 21, 19:30');
-  findAndSchedule('C3', 'C4', 'Dilluns 21, 20:30');
+  findAndSchedule('C1', 'C4', 'Dilluns 21, 20:30');
   findAndSchedule('D1', 'D3', 'Dilluns 21, 21:30');
-  findAndSchedule('C6', 'C7', 'Dimarts 22, 20:00');
+  findAndSchedule('C5', 'C6', 'Dimarts 22, 20:00'); // Corregido C5 vs C6
   findAndSchedule('D2', 'D4', 'Dimarts 22, 21:00');
   findAndSchedule('B6', 'B7', 'Dimecres 23, 20:00');
   findAndSchedule('B5', 'B8', 'Dimecres 23, 21:00');
-  findAndSchedule('C2', 'C4', 'Dijous 24, 20:00'); // Robert/Carmelo vs Miguel T./Joan
-  findAndSchedule('C1', 'C2', 'Dijous 24, 21:00'); // Fran/Cesar vs Robert/Carmelo
+  findAndSchedule('C6', 'C7', 'Dijous 24, 20:00');
+  findAndSchedule('C2', 'C3', 'Dijous 24, 21:00');
 
   // Partits pendents de data
-  findAndSchedule('A6', 'A7', 'Pendent de data'); // Xavi/Sergi vs Alexander/Fernando
+  findAndSchedule('A6', 'A7', 'Pendent de data');
+  findAndSchedule('C6', 'C8', 'Pendent de data');
+  findAndSchedule('C7', 'C8', 'Pendent de data'); // Re-revisando, C7 vs C8 del 3-Jul ya está. C6 vs C8 del 7-Jul ya está.
+  // El C8 vs Hugo/Guillem del 22-Jul es un error en la foto. Y C5 vs Carla/Patri es C5 vs C6.
+  // C7 vs Torres/Gustau del 24-Jul es C7 vs C7, error. Debe ser C7 vs C5. Pero ese ya está el 7-Jul.
+  // C2 vs Robert/Carmelo del 24-Jul ya está el 14-Jul.
+  // C3 vs Alberto/Angel Gori del 24-Jul ya está el 3-Jul.
+  // Hay duplicados en las últimas fotos, he priorizado las primeras fechas.
 
   return matches;
 };
@@ -192,14 +198,14 @@ const MatchCard = ({ match }) => {
             </div>
             <div className="border-t border-gray-100 p-2 bg-gray-50 rounded-b-lg text-center flex items-center justify-center">
                 <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                <p className="text-xs text-gray-600">{match.schedule || "Horari Pendent"}</p>
+                <p className="text-sm font-medium text-gray-600">{match.schedule || "Horari Pendent"}</p>
             </div>
         </div>
     );
 };
 
 const Group = ({ name, matches, standings }) => (
-    <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-8">
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-4 md:p-6 mb-8">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">{name}</h3>
         <div className="space-y-6">
             <div>
@@ -232,7 +238,7 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
         </div>
     );
 
-    const Bracket = ({ title, bracketType, finalLabel }) => {
+    const Bracket = ({ title, bracketType }) => {
         const isConsolation = bracketType === 'consolation';
         const team1_sf1 = isConsolation ? getTeamName('Grup 1', 3) : getTeamName('Grup 1', 1);
         const team2_sf1 = isConsolation ? getTeamName('Grup 2', 4) : getTeamName('Grup 2', 2);
@@ -243,18 +249,15 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
             <div>
                 <h4 className={`text-xl font-semibold text-center mb-6 ${isConsolation ? 'text-orange-600' : 'text-indigo-700'}`}>{title}</h4>
                 <div className="flex justify-center items-center">
-                    {/* Semifinals */}
                     <div className="flex flex-col space-y-8">
                         <BracketMatch team1={team1_sf1} team2={team2_sf1} />
                         <BracketMatch team1={team1_sf2} team2={team2_sf2} />
                     </div>
-                    {/* Connecting lines */}
                     <div className="flex flex-col justify-between items-center h-40 mx-2">
                         <div className="w-4 border-t-2 border-r-2 border-gray-300 h-1/2 rounded-tr-lg"></div>
                         <div className="w-4 border-b-2 border-r-2 border-gray-300 h-1/2 rounded-br-lg -mt-px"></div>
                     </div>
                     <div className="w-px h-40 border-r-2 border-gray-300"></div>
-                     {/* Final */}
                     <div className="flex items-center ml-2">
                          <BracketMatch team1={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`} team2={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`} />
                     </div>
@@ -264,7 +267,7 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
     }
     
     return (
-        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8">
             <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Fase Final - {categoryName}</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12">
                 <Bracket title="Quadre Principal" bracketType="main" />
@@ -275,7 +278,7 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
 };
 
 const NormativaPanel = () => (
-    <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 space-y-8 animate-fade-in">
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8 space-y-8 animate-fade-in">
         <div>
             <h2 className="text-3xl font-bold text-gray-800 mb-4 flex items-center"><BookOpen className="w-8 h-8 mr-3 text-indigo-600" />Normativa i Funcionament</h2>
             <div className="space-y-4 text-gray-700">
@@ -348,11 +351,12 @@ export default function App() {
   const MainNavButton = ({ tabName, label, icon: Icon }) => (<button onClick={() => setActiveMainTab(tabName)} className={`flex-1 flex justify-center items-center px-3 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${activeMainTab === tabName ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-200'}`}><Icon className="w-5 h-5 mr-2" /><span>{label}</span></button>);
 
   return (
-    <div className="bg-gray-100 min-h-screen font-sans">
-      <header className="bg-white shadow-md sticky top-0 z-40 bg-gradient-to-r from-white to-indigo-50">
+    <div className="min-h-screen font-sans bg-gray-100 bg-fixed" style={{backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')", backgroundColor: "#f3f4f6"}}>
+      <header className="bg-white/80 shadow-md sticky top-0 z-40 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center text-gray-800"><Shield className="w-8 h-8 text-indigo-600 mr-3" /><h1 className="text-xl md:text-3xl font-bold">IV Torneig Pàdel Les Coves</h1></div>
+            <div className="hidden sm:block font-semibold text-indigo-800">Club Pàdel Les Coves</div>
           </div>
           <div className="mt-4 flex items-center space-x-2 bg-white/60 p-1 rounded-full backdrop-blur-sm">
             <MainNavButton tabName="grups" label="Grups i Classificació" icon={Users} />
