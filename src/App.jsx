@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Shield, Trophy, Calendar, Users, BookOpen } from 'lucide-react';
+import { Shield, Trophy, Calendar, Users, BookOpen, AlertTriangle } from 'lucide-react';
 
 // --- DATOS DEL TORNEO ---
-// Grupos finales y pareja añadida en 2a Categoría.
 const initialTournamentData = {
   '1ª': {
     'Grup 1': [ { id: 'A1', name: 'Vicenç / Victor' }, { id: 'A2', name: 'Guillem / Alex' }, { id: 'A3', name: 'Jordi / Ivan' }, { id: 'A4', name: 'Valentin / Borja' } ],
@@ -38,85 +37,64 @@ const generateMatchesAndResults = (teams) => {
     }
   }
   
-  // --- ZONA DE HORARIOS ---
   const findAndSchedule = (t1, t2, schedule) => {
     const match = matches.find(m => (m.team1.id === t1 && m.team2.id === t2) || (m.team1.id === t2 && m.team2.id === t1));
     if (match) match.schedule = schedule;
   };
 
-  // Dimarts 1-Jul
+  // --- HORARIOS CORREGIDOS SEGÚN LA IMAGEN ---
+  // SETMANA 1
   findAndSchedule('D1', 'D2', 'Dimarts 1, 19:30');
   findAndSchedule('D3', 'D4', 'Dimarts 1, 20:30');
   findAndSchedule('C5', 'C6', 'Dimarts 1, 21:30');
-  findAndSchedule('B2', 'B3', 'Dimarts 1, 22:00 PISTA DALT'); // Toni/Ricardo vs Hugo/Fran
-  
-  // Dimecres 2-Jul
-  findAndSchedule('A5', 'A6', 'Dimecres 2, 19:30');
+  findAndSchedule('B2', 'B3', 'Dimarts 1, 22:00 PISTA DALT');
+  findAndSchedule('A5', 'A7', 'Dimecres 2, 19:30'); // Jonatan/Miquel vs Alexander/Fernando
   findAndSchedule('B5', 'B6', 'Dimecres 2, 20:30');
   findAndSchedule('B7', 'B8', 'Dimecres 2, 21:30');
-
-  // Dijous 3-Jul
   findAndSchedule('C7', 'C8', 'Dijous 3, 19:30');
-  findAndSchedule('C1', 'C2', 'Dijous 3, 20:30');
-  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30');
+  findAndSchedule('C1', 'C3', 'Dijous 3, 20:30'); // Fran/Cesar vs Alberto/Angel
+  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30'); // Alexander/Fernando vs Angel/Miguel
+  findAndSchedule('C2', 'C4', 'Dissabte 5, 19:30'); // Robert/Carmelo vs Miguel T./Joan
 
-  // Dissabte 5-Jul
-  findAndSchedule('C3', 'C4', 'Dissabte 5, 19:30');
-
-  // Dilluns 7-Jul
+  // SETMANA 2
   findAndSchedule('A3', 'A4', 'Dilluns 7, 19:30');
   findAndSchedule('C5', 'C7', 'Dilluns 7, 20:30');
   findAndSchedule('C6', 'C8', 'Dilluns 7, 21:30');
-
-  // Dimarts 8-Jul
   findAndSchedule('A1', 'A2', 'Dimarts 8, 19:30');
-  findAndSchedule('A5', 'A7', 'Dimarts 8, 20:30');
-  findAndSchedule('A6', 'A8', 'Dimarts 8, 21:30');
-
-  // Dimecres 9-Jul
+  findAndSchedule('A6', 'A8', 'Dimarts 8, 20:30'); // Xavi/Sergi vs Angel/Miguel
+  findAndSchedule('B1', 'B3', 'Dimarts 8, 21:30'); // Xavi/Andres vs Hugo/Fran
   findAndSchedule('D1', 'D4', 'Dimecres 9, 19:30');
   findAndSchedule('B5', 'B7', 'Dimecres 9, 20:30');
   findAndSchedule('B6', 'B8', 'Dimecres 9, 21:30');
-
-  // Dijous 10-Jul
   findAndSchedule('A2', 'A4', 'Dijous 10, 19:30');
   findAndSchedule('D2', 'D3', 'Dijous 10, 20:30');
 
-  // Dilluns 14-Jul
-  findAndSchedule('C1', 'C3', 'Dilluns 14, 19:30');
-  findAndSchedule('C2', 'C4', 'Dilluns 14, 20:30');
+  // SETMANA 3
+  findAndSchedule('C1', 'C4', 'Dilluns 14, 19:30');
+  findAndSchedule('C2', 'C3', 'Dilluns 14, 20:30');
   findAndSchedule('B3', 'B4', 'Dilluns 14, 21:30');
-
-  // Dimarts 15-Jul
-  findAndSchedule('A5', 'A8', 'Dimarts 15, 19:30');
+  findAndSchedule('A1', 'A4', 'Dimarts 15, 19:30');
   findAndSchedule('B1', 'B2', 'Dimarts 15, 20:30');
-  findAndSchedule('A6', 'A7', 'Dimarts 15, 21:30');
-
-  // Dimecres 16-Jul
+  findAndSchedule('A5', 'A8', 'Dimarts 15, 21:30'); // Jonatan/Miquel vs Angel/Miguel
   findAndSchedule('A1', 'A3', 'Dimecres 16, 19:30');
   findAndSchedule('B1', 'B4', 'Dimecres 16, 20:30');
   findAndSchedule('C5', 'C8', 'Dimecres 16, 21:30');
+  findAndSchedule('C1', 'C2', 'Dijous 17, 19:30');
+  findAndSchedule('B2', 'B4', 'Dijous 17, 20:30'); // Toni/Ricardo vs Nestor/Borja
 
-  // Dijous 17-Jul
-  findAndSchedule('C2', 'C3', 'Dijous 17, 19:30');
-  findAndSchedule('B2', 'B3', 'Dijous 17, 20:30');
-
-  // Dilluns 21-Jul
+  // SETMANA 4
   findAndSchedule('A2', 'A3', 'Dilluns 21, 19:30');
-  findAndSchedule('C1', 'C4', 'Dilluns 21, 20:30');
+  findAndSchedule('C3', 'C4', 'Dilluns 21, 20:30');
   findAndSchedule('D1', 'D3', 'Dilluns 21, 21:30');
-
-  // Dimarts 22-Jul
   findAndSchedule('C6', 'C7', 'Dimarts 22, 20:00');
   findAndSchedule('D2', 'D4', 'Dimarts 22, 21:00');
-
-  // Dimecres 23-Jul
   findAndSchedule('B6', 'B7', 'Dimecres 23, 20:00');
   findAndSchedule('B5', 'B8', 'Dimecres 23, 21:00');
-  
+  findAndSchedule('C2', 'C4', 'Dijous 24, 20:00'); // Robert/Carmelo vs Miguel T./Joan
+  findAndSchedule('C1', 'C2', 'Dijous 24, 21:00'); // Fran/Cesar vs Robert/Carmelo
+
   // Partits pendents de data
-  findAndSchedule('A1', 'A4', 'Pendent de data');
-  findAndSchedule('A6', 'A7', 'Pendent de data');
+  findAndSchedule('A6', 'A7', 'Pendent de data'); // Xavi/Sergi vs Alexander/Fernando
 
   return matches;
 };
@@ -156,7 +134,7 @@ const getStandings = (teams, matches) => {
 };
 
 const ClassificationTable = ({ standings }) => (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
+    <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
         <table className="w-full min-w-[800px] text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
@@ -174,7 +152,7 @@ const ClassificationTable = ({ standings }) => (
             </thead>
             <tbody>
                 {standings.map((s, index) => (
-                    <tr key={s.teamId} className="bg-white border-b hover:bg-gray-50">
+                    <tr key={s.teamId} className="bg-white border-b hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-3 py-3 font-bold text-gray-900">{index + 1}</td>
                         <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{s.teamName}</th>
                         <td className="px-3 py-4 text-center font-bold text-indigo-600">{s.P}</td>
@@ -201,7 +179,7 @@ const MatchCard = ({ match }) => {
     };
 
     return (
-        <div className={`bg-white rounded-lg shadow-md border-l-4 ${match.played ? 'border-green-500' : 'border-gray-300'} flex flex-col`}>
+        <div className={`bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 ${match.played ? 'border-green-500' : 'border-indigo-400'} flex flex-col`}>
             <div className="p-4 flex-grow">
                 <div className="flex flex-col items-center text-center">
                     <p className="font-semibold text-gray-800">{match.team1.name}</p>
@@ -212,7 +190,7 @@ const MatchCard = ({ match }) => {
             <div className="border-t border-gray-200 p-3 bg-gray-50 text-center">
                 <p className="text-lg font-bold text-indigo-600">{getMatchResult()}</p>
             </div>
-            <div className="border-t border-gray-100 p-2 bg-gray-50 text-center flex items-center justify-center">
+            <div className="border-t border-gray-100 p-2 bg-gray-50 rounded-b-lg text-center flex items-center justify-center">
                 <Calendar className="w-4 h-4 mr-2 text-gray-500" />
                 <p className="text-xs text-gray-600">{match.schedule || "Horari Pendent"}</p>
             </div>
@@ -247,54 +225,53 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
       if (position === 4) posText += 't';
       return finalStandings?.[group]?.[position - 1]?.teamName || `${posText} Grup ${group.slice(-1)}`;
     }
-    const BracketItem = ({ top, bottom, label }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="border-l-2 border-b-2 border-gray-300 h-6 w-1/2"></div><div className="border-r-2 border-b-2 border-gray-300 h-6 w-1/2 -mt-6"></div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div><div className="border-l-2 border-gray-300 h-10 w-px"></div><div className="bg-indigo-100 text-indigo-800 p-3 rounded-md w-44 text-center text-sm font-bold shadow-sm">{label}</div></div>);
-    const FinalItem = ({ top, bottom }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="text-sm font-bold my-2">VS</div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div></div>);
-    
-    // Lógica para categorías con 2 grupos de 4 (1ª, 3ª, 4ª)
-    if (categoryName === '1ª' || categoryName === '3ª' || categoryName === '4ª') {
-         return (
-             <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                 <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-                     <div className="border-r-0 md:border-r md:pr-4 border-gray-200">
-                         <h4 className="text-xl font-semibold text-center mb-6 text-indigo-700">Quadre Principal</h4>
-                         <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 1)} bottom={getTeamName('Grup 2', 2)} label="Semifinal 1" /><BracketItem top={getTeamName('Grup 2', 1)} bottom={getTeamName('Grup 1', 2)} label="Semifinal 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-indigo-600 mb-2">FINAL</h5><FinalItem top="Guanyador SF 1" bottom="Guanyador SF 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-gray-600 mb-2">3r i 4t Lloc</h5><FinalItem top="Perdedor SF 1" bottom="Perdedor SF 2" /></div>
-                     </div>
-                     <div>
-                         <h4 className="text-xl font-semibold text-center mb-6 text-orange-600">Quadre de Consolació</h4>
-                          <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 2', 4)} label="Semifinal Consolació 1" /><BracketItem top={getTeamName('Grup 2', 3)} bottom={getTeamName('Grup 1', 4)} label="Semifinal Consolació 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top="Guanyador SF Cons. 1" bottom="Guanyador SF Cons. 2" /></div>
-                     </div>
-                 </div>
-             </div>
-         );
-    }
+    const BracketMatch = ({ team1, team2 }) => (
+        <div className="flex flex-col justify-center w-48 text-sm">
+            <div className="bg-gray-100 p-2 rounded-t-md border-b border-gray-200 h-10 flex items-center justify-center shadow-sm">{team1}</div>
+            <div className="bg-gray-100 p-2 rounded-b-md h-10 flex items-center justify-center shadow-sm">{team2}</div>
+        </div>
+    );
 
-    // Lógica especial para 2ª (Grupo 1 de 4, Grupo 2 de 4) -> Ahora es igual que las demás
-     if (categoryName === '2ª') {
+    const Bracket = ({ title, bracketType, finalLabel }) => {
+        const isConsolation = bracketType === 'consolation';
+        const team1_sf1 = isConsolation ? getTeamName('Grup 1', 3) : getTeamName('Grup 1', 1);
+        const team2_sf1 = isConsolation ? getTeamName('Grup 2', 4) : getTeamName('Grup 2', 2);
+        const team1_sf2 = isConsolation ? getTeamName('Grup 2', 3) : getTeamName('Grup 2', 1);
+        const team2_sf2 = isConsolation ? getTeamName('Grup 1', 4) : getTeamName('Grup 1', 2);
+
         return (
-             <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                 <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-                     <div className="border-r-0 md:border-r md:pr-4 border-gray-200">
-                         <h4 className="text-xl font-semibold text-center mb-6 text-indigo-700">Quadre Principal</h4>
-                         <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 1)} bottom={getTeamName('Grup 2', 2)} label="Semifinal 1" /><BracketItem top={getTeamName('Grup 2', 1)} bottom={getTeamName('Grup 1', 2)} label="Semifinal 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-indigo-600 mb-2">FINAL</h5><FinalItem top="Guanyador SF 1" bottom="Guanyador SF 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-gray-600 mb-2">3r i 4t Lloc</h5><FinalItem top="Perdedor SF 1" bottom="Perdedor SF 2" /></div>
-                     </div>
-                     <div>
-                         <h4 className="text-xl font-semibold text-center mb-6 text-orange-600">Quadre de Consolació</h4>
-                         <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 2', 4)} label="Semifinal Consolació 1" /><BracketItem top={getTeamName('Grup 2', 3)} bottom={getTeamName('Grup 1', 4)} label="Semifinal Consolació 2" /></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top="Guanyador SF Cons. 1" bottom="Guanyador SF Cons. 2" /></div>
-                     </div>
-                 </div>
-             </div>
+            <div>
+                <h4 className={`text-xl font-semibold text-center mb-6 ${isConsolation ? 'text-orange-600' : 'text-indigo-700'}`}>{title}</h4>
+                <div className="flex justify-center items-center">
+                    {/* Semifinals */}
+                    <div className="flex flex-col space-y-8">
+                        <BracketMatch team1={team1_sf1} team2={team2_sf1} />
+                        <BracketMatch team1={team1_sf2} team2={team2_sf2} />
+                    </div>
+                    {/* Connecting lines */}
+                    <div className="flex flex-col justify-between items-center h-40 mx-2">
+                        <div className="w-4 border-t-2 border-r-2 border-gray-300 h-1/2 rounded-tr-lg"></div>
+                        <div className="w-4 border-b-2 border-r-2 border-gray-300 h-1/2 rounded-br-lg -mt-px"></div>
+                    </div>
+                    <div className="w-px h-40 border-r-2 border-gray-300"></div>
+                     {/* Final */}
+                    <div className="flex items-center ml-2">
+                         <BracketMatch team1={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`} team2={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`} />
+                    </div>
+                </div>
+            </div>
         );
     }
     
-    return null;
+    return (
+        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8">
+            <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Fase Final - {categoryName}</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12">
+                <Bracket title="Quadre Principal" bracketType="main" />
+                <Bracket title="Quadre de Consolació" bracketType="consolation" />
+            </div>
+        </div>
+    );
 };
 
 const NormativaPanel = () => (
@@ -306,6 +283,15 @@ const NormativaPanel = () => (
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
                 <p><strong>Format dels partits:</strong> Tots els partits de la fase de grups es jugaran al millor de 3 sets. Els dos primers sets es juguen de forma habitual. En cas d'empat a un set, el tercer es decidirà mitjançant un <strong>súper tie-break a 10 punts</strong>.</p>
                 <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons els següents criteris: 1º Punts (cada set guanyat suma 1 punt), 2º Diferència de sets (SG - SP), 3º Diferència de jocs (JG - JP).</p>
+                <div className="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                    <div className="flex">
+                        <div className="py-1"><AlertTriangle className="h-6 w-6 text-yellow-500 mr-3" /></div>
+                        <div>
+                            <p className="font-bold text-yellow-800">Norma Important</p>
+                            <p className="text-sm text-yellow-700">Les partides no acabades de grups abans del 27/07 es donaran por perdudes 2-0 (sets) i 6/0 6/0 per a la parella que no ha pogut jugar segons els horaris establerts. És important posar el resultat al grup de WhatsApp de cada categoria al finalitzar per poder actualitzar la web.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -363,12 +349,12 @@ export default function App() {
 
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
-      <header className="bg-white shadow-md sticky top-0 z-40">
+      <header className="bg-white shadow-md sticky top-0 z-40 bg-gradient-to-r from-white to-indigo-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center text-gray-800"><Shield className="w-8 h-8 text-indigo-600 mr-3" /><h1 className="text-xl md:text-3xl font-bold">IV Torneig Pàdel Les Coves</h1></div>
           </div>
-          <div className="mt-4 flex items-center space-x-2 bg-gray-100 p-1 rounded-full">
+          <div className="mt-4 flex items-center space-x-2 bg-white/60 p-1 rounded-full backdrop-blur-sm">
             <MainNavButton tabName="grups" label="Grups i Classificació" icon={Users} />
             <MainNavButton tabName="fasefinal" label="Fase Final" icon={Trophy} />
             <MainNavButton tabName="normativa" label="Normativa" icon={BookOpen} />
@@ -376,11 +362,11 @@ export default function App() {
         </div>
       </header>
       <main className="container mx-auto p-4 md:p-6">
-        {activeMainTab === 'grups' && (<div className="animate-fade-in"><div className="mb-6"><div className="flex space-x-1 bg-white p-1 rounded-lg shadow-sm">{Object.keys(tournamentData).map((category) => (<button key={category} onClick={() => setActiveCategoryTab(category)} className={`w-full py-2.5 text-sm md:text-base font-medium leading-5 rounded-lg ${activeCategoryTab === category ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-200/50'}`}>{category}</button>))}</div></div>{standingsByCategory[activeCategoryTab] && Object.entries(standingsByCategory[activeCategoryTab]).map(([groupName, standings]) => (<Group key={groupName} name={groupName} matches={tournamentData[activeCategoryTab][groupName].matches} standings={standings} />))}</div>)}
+        {activeMainTab === 'grups' && (<div className="animate-fade-in"><div className="mb-6"><div className="flex space-x-1 bg-white p-1 rounded-lg shadow-sm">{Object.keys(tournamentData).map((category) => (<button key={category} onClick={() => setActiveCategoryTab(category)} className={`w-full py-2.5 text-sm md:text-base font-medium leading-5 rounded-lg transition-colors duration-200 ${activeCategoryTab === category ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-700 hover:bg-indigo-100'}`}>{category}</button>))}</div></div>{standingsByCategory[activeCategoryTab] && Object.entries(standingsByCategory[activeCategoryTab]).map(([groupName, standings]) => (<Group key={groupName} name={groupName} matches={tournamentData[activeCategoryTab][groupName].matches} standings={standings} />))}</div>)}
         {activeMainTab === 'fasefinal' && (<div className="space-y-8 animate-fade-in">{Object.keys(tournamentData).map(category => (<FinalsBracket key={category} categoryName={category} finalStandings={finalStandings[category]} />))}</div>)}
         {activeMainTab === 'normativa' && (<NormativaPanel />)}
       </main>
-      <style>{`.animate-fade-in{animation:fadeIn .5s ease-in-out}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.animate-slide-up{animation:slideUp .3s ease-out}@keyframes slideUp{from{transform:translateY(20px);opacity:.5}to{transform:translateY(0);opacity:1}}`}</style>
+      <style>{`.animate-fade-in{animation:fadeIn .5s ease-in-out}@keyframes fadeIn{from{opacity:0}to{opacity:1}}`}</style>
     </div>
   );
 }
