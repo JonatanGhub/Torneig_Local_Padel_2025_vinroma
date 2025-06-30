@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Shield, Trophy, Calendar, Users, BookOpen } from 'lucide-react';
 
 // --- DATOS DEL TORNEO ---
+// Grupos finales y pareja añadida en 2a Categoría.
 const initialTournamentData = {
   '1ª': {
     'Grup 1': [ { id: 'A1', name: 'Vicenç / Victor' }, { id: 'A2', name: 'Guillem / Alex' }, { id: 'A3', name: 'Jordi / Ivan' }, { id: 'A4', name: 'Valentin / Borja' } ],
@@ -9,7 +10,7 @@ const initialTournamentData = {
   },
   '2ª': {
     'Grup 1': [ { id: 'B1', name: 'Xavi / Andres' }, { id: 'B2', name: 'Toni / Ricardo' }, { id: 'B3', name: 'Hugo / Fran' }, { id: 'B4', name: 'Nestor / Borja' } ],
-    'Grup 2': [ { id: 'B5', name: 'Juan / German' }, { id: 'B6', name: 'Iago / Carlos' }, { id: 'B7', name: 'Oscar / Jordi G.' } ],
+    'Grup 2': [ { id: 'B5', name: 'Juan / German' }, { id: 'B6', name: 'Iago / Carlos' }, { id: 'B7', name: 'Oscar / Jordi G.' }, { id: 'B8', name: 'Guillem / Hugo' } ],
   },
   '3ª': {
     'Grup 1': [ { id: 'C1', name: 'Fran / Cesar' }, { id: 'C2', name: 'Robert / Carmelo' }, { id: 'C3', name: 'Alberto / Angel' }, { id: 'C4', name: 'Miguel T. / Joan' } ],
@@ -32,14 +33,91 @@ const generateMatchesAndResults = (teams) => {
         team2: teams[j],
         sets: [[null, null], [null, null], [null, null]],
         played: false,
-        schedule: null, // <-- Aquí s'afegirà l'horari, p. ex., "Dimarts 1, 19:30"
+        schedule: null,
       });
     }
   }
   
-  // --- ZONA DE RESULTADOS Y HORARIOS ---
-  // Aquesta secció s'actualitzarà amb els resultats i horaris que em proporcionis.
+  // --- ZONA DE HORARIOS ---
+  const findAndSchedule = (t1, t2, schedule) => {
+    const match = matches.find(m => (m.team1.id === t1 && m.team2.id === t2) || (m.team1.id === t2 && m.team2.id === t1));
+    if (match) match.schedule = schedule;
+  };
+
+  // Dimarts 1-Jul
+  findAndSchedule('D1', 'D2', 'Dimarts 1, 19:30');
+  findAndSchedule('D3', 'D4', 'Dimarts 1, 20:30');
+  findAndSchedule('C5', 'C6', 'Dimarts 1, 21:30');
+  findAndSchedule('B2', 'B3', 'Dimarts 1, 22:00 PISTA DALT'); // Toni/Ricardo vs Hugo/Fran
   
+  // Dimecres 2-Jul
+  findAndSchedule('A5', 'A6', 'Dimecres 2, 19:30');
+  findAndSchedule('B5', 'B6', 'Dimecres 2, 20:30');
+  findAndSchedule('B7', 'B8', 'Dimecres 2, 21:30');
+
+  // Dijous 3-Jul
+  findAndSchedule('C7', 'C8', 'Dijous 3, 19:30');
+  findAndSchedule('C1', 'C2', 'Dijous 3, 20:30');
+  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30');
+
+  // Dissabte 5-Jul
+  findAndSchedule('C3', 'C4', 'Dissabte 5, 19:30');
+
+  // Dilluns 7-Jul
+  findAndSchedule('A3', 'A4', 'Dilluns 7, 19:30');
+  findAndSchedule('C5', 'C7', 'Dilluns 7, 20:30');
+  findAndSchedule('C6', 'C8', 'Dilluns 7, 21:30');
+
+  // Dimarts 8-Jul
+  findAndSchedule('A1', 'A2', 'Dimarts 8, 19:30');
+  findAndSchedule('A5', 'A7', 'Dimarts 8, 20:30');
+  findAndSchedule('A6', 'A8', 'Dimarts 8, 21:30');
+
+  // Dimecres 9-Jul
+  findAndSchedule('D1', 'D4', 'Dimecres 9, 19:30');
+  findAndSchedule('B5', 'B7', 'Dimecres 9, 20:30');
+  findAndSchedule('B6', 'B8', 'Dimecres 9, 21:30');
+
+  // Dijous 10-Jul
+  findAndSchedule('A2', 'A4', 'Dijous 10, 19:30');
+  findAndSchedule('D2', 'D3', 'Dijous 10, 20:30');
+
+  // Dilluns 14-Jul
+  findAndSchedule('C1', 'C3', 'Dilluns 14, 19:30');
+  findAndSchedule('C2', 'C4', 'Dilluns 14, 20:30');
+  findAndSchedule('B3', 'B4', 'Dilluns 14, 21:30');
+
+  // Dimarts 15-Jul
+  findAndSchedule('A5', 'A8', 'Dimarts 15, 19:30');
+  findAndSchedule('B1', 'B2', 'Dimarts 15, 20:30');
+  findAndSchedule('A6', 'A7', 'Dimarts 15, 21:30');
+
+  // Dimecres 16-Jul
+  findAndSchedule('A1', 'A3', 'Dimecres 16, 19:30');
+  findAndSchedule('B1', 'B4', 'Dimecres 16, 20:30');
+  findAndSchedule('C5', 'C8', 'Dimecres 16, 21:30');
+
+  // Dijous 17-Jul
+  findAndSchedule('C2', 'C3', 'Dijous 17, 19:30');
+  findAndSchedule('B2', 'B3', 'Dijous 17, 20:30');
+
+  // Dilluns 21-Jul
+  findAndSchedule('A2', 'A3', 'Dilluns 21, 19:30');
+  findAndSchedule('C1', 'C4', 'Dilluns 21, 20:30');
+  findAndSchedule('D1', 'D3', 'Dilluns 21, 21:30');
+
+  // Dimarts 22-Jul
+  findAndSchedule('C6', 'C7', 'Dimarts 22, 20:00');
+  findAndSchedule('D2', 'D4', 'Dimarts 22, 21:00');
+
+  // Dimecres 23-Jul
+  findAndSchedule('B6', 'B7', 'Dimecres 23, 20:00');
+  findAndSchedule('B5', 'B8', 'Dimecres 23, 21:00');
+  
+  // Partits pendents de data
+  findAndSchedule('A1', 'A4', 'Pendent de data');
+  findAndSchedule('A6', 'A7', 'Pendent de data');
+
   return matches;
 };
 
@@ -172,8 +250,8 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
     const BracketItem = ({ top, bottom, label }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="border-l-2 border-b-2 border-gray-300 h-6 w-1/2"></div><div className="border-r-2 border-b-2 border-gray-300 h-6 w-1/2 -mt-6"></div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div><div className="border-l-2 border-gray-300 h-10 w-px"></div><div className="bg-indigo-100 text-indigo-800 p-3 rounded-md w-44 text-center text-sm font-bold shadow-sm">{label}</div></div>);
     const FinalItem = ({ top, bottom }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="text-sm font-bold my-2">VS</div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div></div>);
     
-    // Lógica para categorías con 2 grupos de 4 (1ª, 3ª)
-    if (categoryName === '1ª' || categoryName === '3ª') {
+    // Lógica para categorías con 2 grupos de 4 (1ª, 3ª, 4ª)
+    if (categoryName === '1ª' || categoryName === '3ª' || categoryName === '4ª') {
          return (
              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
@@ -193,7 +271,8 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
              </div>
          );
     }
-    // Lógica especial para 2ª (Grupo 1 de 4, Grupo 2 de 3)
+
+    // Lógica especial para 2ª (Grupo 1 de 4, Grupo 2 de 4) -> Ahora es igual que las demás
      if (categoryName === '2ª') {
         return (
              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
@@ -207,22 +286,14 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
                      </div>
                      <div>
                          <h4 className="text-xl font-semibold text-center mb-6 text-orange-600">Quadre de Consolació</h4>
-                         <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 2', 3)} label="Semifinal Consolació 1" /><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{getTeamName('Grup 1', 4)} <br/>(Passa a la final)</div></div>
-                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top="Guanyador SF Cons. 1" bottom={getTeamName('Grup 1', 4)} /></div>
+                         <div className="flex flex-col lg:flex-row justify-around items-center"><BracketItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 2', 4)} label="Semifinal Consolació 1" /><BracketItem top={getTeamName('Grup 2', 3)} bottom={getTeamName('Grup 1', 4)} label="Semifinal Consolació 2" /></div>
+                         <div className="mt-8 text-center"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top="Guanyador SF Cons. 1" bottom="Guanyador SF Cons. 2" /></div>
                      </div>
                  </div>
              </div>
         );
     }
-    // Lógica para 4ª categoria (1 grupo de 4)
-    if (categoryName === '4ª') {
-         return (
-            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
-                <div className="text-center"><h4 className="text-xl font-semibold text-center mb-2 text-green-700">Finals 4ª Categoria</h4><p className="text-sm text-gray-600 mb-4">(Format especial per a 1 grup)</p><div className="flex justify-center items-center space-x-8"><div className="flex-1"><h5 className="text-lg font-semibold text-indigo-600 mb-2">FINAL</h5><FinalItem top={getTeamName('Grup 1', 1)} bottom={getTeamName('Grup 1', 2)}/></div><div className="flex-1"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 1', 4)}/></div></div></div>
-            </div>
-        );
-    }
+    
     return null;
 };
 
