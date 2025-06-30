@@ -2,66 +2,29 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Shield, Trophy, Calendar, Users, BookOpen } from 'lucide-react';
 
 // --- DATOS DEL TORNEO ---
-// Grupos corregidos y actualizados según las últimas indicaciones del usuario.
 const initialTournamentData = {
   '1ª': {
-    'Grup 1': [ 
-        { id: 'A1', name: 'Vicenç / Victor' }, 
-        { id: 'A2', name: 'Guillem / Alex' }, 
-        { id: 'A3', name: 'Jordi / Ivan' },
-        { id: 'A4', name: 'Valentin / Borja' }
-    ],
-    'Grup 2': [ 
-        { id: 'A5', name: 'Jonatan / Miquel' }, 
-        { id: 'A6', name: 'Xavi / Sergi' }, 
-        { id: 'A7', name: 'Alexander / Fernando' },
-        { id: 'A8', name: 'Angel / Miguel' }
-    ],
+    'Grup 1': [ { id: 'A1', name: 'Vicenç / Victor' }, { id: 'A2', name: 'Guillem / Alex' }, { id: 'A3', name: 'Jordi / Ivan' }, { id: 'A4', name: 'Valentin / Borja' } ],
+    'Grup 2': [ { id: 'A5', name: 'Jonatan / Miquel' }, { id: 'A6', name: 'Xavi / Sergi' }, { id: 'A7', name: 'Alexander / Fernando' }, { id: 'A8', name: 'Angel / Miguel' } ],
   },
   '2ª': {
-    'Grup 1': [ 
-        { id: 'B1', name: 'Xavi / Andres' }, 
-        { id: 'B2', name: 'Toni / Ricardo' }, 
-        { id: 'B3', name: 'Hugo / Fran' }, 
-        { id: 'B4', name: 'Nestor / Borja' }
-    ],
-    'Grup 2': [ 
-        { id: 'B5', name: 'Juan / German' }, 
-        { id: 'B6', name: 'Iago / Carlos' },
-        { id: 'B7', name: 'Oscar / Jordi G.' }
-    ],
+    'Grup 1': [ { id: 'B1', name: 'Xavi / Andres' }, { id: 'B2', name: 'Toni / Ricardo' }, { id: 'B3', name: 'Hugo / Fran' }, { id: 'B4', name: 'Nestor / Borja' } ],
+    'Grup 2': [ { id: 'B5', name: 'Juan / German' }, { id: 'B6', name: 'Iago / Carlos' }, { id: 'B7', name: 'Oscar / Jordi G.' } ],
   },
   '3ª': {
-    'Grup 1': [ 
-        { id: 'C1', name: 'Fran / Cesar' }, 
-        { id: 'C2', name: 'Robert / Carmelo' }, 
-        { id: 'C3', name: 'Alberto / Angel' },
-        { id: 'C4', name: 'Miguel T. / Joan' }
-    ],
-    'Grup 2': [ 
-        { id: 'C5', name: 'Laura / Gemma' }, 
-        { id: 'C6', name: 'Carla / Patri' }, 
-        { id: 'C7', name: 'Jose A. / Gustau' },
-        { id: 'C8', name: 'Hugo / Guillem' }
-    ],
+    'Grup 1': [ { id: 'C1', name: 'Fran / Cesar' }, { id: 'C2', name: 'Robert / Carmelo' }, { id: 'C3', name: 'Alberto / Angel' }, { id: 'C4', name: 'Miguel T. / Joan' } ],
+    'Grup 2': [ { id: 'C5', name: 'Laura / Gemma' }, { id: 'C6', name: 'Carla / Patri' }, { id: 'C7', name: 'Jose A. / Gustau' }, { id: 'C8', name: 'Hugo / Guillem' } ],
   },
   '4ª': {
-    'Grup 1': [ 
-        { id: 'D1', name: 'Mariano / Jordi M.' }, 
-        { id: 'D2', name: 'Alma / Paula' }, 
-        { id: 'D3', name: 'Agnes / Ainoa' }, 
-        { id: 'D4', name: 'Alba / Leticia' } 
-    ],
+    'Grup 1': [ { id: 'D1', name: 'Mariano / Jordi M.' }, { id: 'D2', name: 'Alma / Paula' }, { id: 'D3', name: 'Agnes / Ainoa' }, { id: 'D4', name: 'Alba / Leticia' } ],
   },
 };
 
 // --- FUNCIÓN PARA GENERAR PARTIDOS Y RESULTADOS ---
-// Se generan los partidos. Los resultados se añadirán en futuras actualizaciones.
 const generateMatchesAndResults = (teams) => {
   const matches = [];
   if (!teams) return matches;
 
-  // Generar todos los enfrentamientos posibles
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
       matches.push({
@@ -69,16 +32,16 @@ const generateMatchesAndResults = (teams) => {
         team2: teams[j],
         sets: [[null, null], [null, null], [null, null]],
         played: false,
+        schedule: null, // <-- Aquí s'afegirà l'horari, p. ex., "Dimarts 1, 19:30"
       });
     }
   }
   
-  // --- ZONA DE RESULTADOS ---
-  // Esta sección está vacía. Los resultados se añadirán cuando me los proporciones.
-
+  // --- ZONA DE RESULTADOS Y HORARIOS ---
+  // Aquesta secció s'actualitzarà amb els resultats i horaris que em proporcionis.
+  
   return matches;
 };
-
 
 // --- COMPONENTES ---
 
@@ -88,8 +51,7 @@ const getStandings = (teams, matches) => {
         if (match.played) {
             const team1Stats = stats[match.team1.id];
             const team2Stats = stats[match.team2.id];
-            team1Stats.PJ++;
-            team2Stats.PJ++;
+            team1Stats.PJ++; team2Stats.PJ++;
             let team1SetsWon = 0, team2SetsWon = 0;
             for (let i = 0; i < match.sets.length; i++) {
                 const set = match.sets[i];
@@ -152,38 +114,52 @@ const ClassificationTable = ({ standings }) => (
     </div>
 );
 
-const Group = ({ name, matches, standings }) => {
-    const getMatchResult = (match) => {
+const MatchCard = ({ match }) => {
+    const getMatchResult = () => {
         if (!match.played) return 'Pendent';
         let res = `${match.sets[0][0]}-${match.sets[0][1]}, ${match.sets[1][0]}-${match.sets[1][1]}`;
         if (match.sets[2][0] !== null && match.sets[2][1] !== null) { res += `, ${match.sets[2][0]}-${match.sets[2][1]}`; }
         return res;
     };
+
     return (
-        <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">{name}</h3>
-            <div className="space-y-6">
-                <div>
-                    <h4 className="font-semibold text-lg text-gray-700 mb-3">Classificació</h4>
-                    <ClassificationTable standings={standings} />
+        <div className={`bg-white rounded-lg shadow-md border-l-4 ${match.played ? 'border-green-500' : 'border-gray-300'} flex flex-col`}>
+            <div className="p-4 flex-grow">
+                <div className="flex flex-col items-center text-center">
+                    <p className="font-semibold text-gray-800">{match.team1.name}</p>
+                    <span className="text-sm font-bold text-gray-400 my-1">VS</span>
+                    <p className="font-semibold text-gray-800">{match.team2.name}</p>
                 </div>
-                <div>
-                    <h4 className="font-semibold text-lg text-gray-700 mb-3">Enfrontaments</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {matches.map((match, index) => (
-                            <div key={index} className={`bg-gray-50 p-3 rounded-lg border-l-4 ${match.played ? 'border-green-500' : 'border-gray-300'}`}>
-                                <div className="text-sm font-medium text-gray-700">{match.team1.name}</div>
-                                <div className="text-center font-bold text-gray-400 my-1">VS</div>
-                                <div className="text-sm font-medium text-gray-700 text-right">{match.team2.name}</div>
-                                <div className="mt-2 text-center text-base font-bold text-indigo-600">{getMatchResult(match)}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            </div>
+            <div className="border-t border-gray-200 p-3 bg-gray-50 text-center">
+                <p className="text-lg font-bold text-indigo-600">{getMatchResult()}</p>
+            </div>
+            <div className="border-t border-gray-100 p-2 bg-gray-50 text-center flex items-center justify-center">
+                <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                <p className="text-xs text-gray-600">{match.schedule || "Horari Pendent"}</p>
             </div>
         </div>
     );
 };
+
+const Group = ({ name, matches, standings }) => (
+    <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-8">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{name}</h3>
+        <div className="space-y-6">
+            <div>
+                <h4 className="font-semibold text-lg text-gray-700 mb-3">Classificació</h4>
+                <ClassificationTable standings={standings} />
+            </div>
+            <div>
+                <h4 className="font-semibold text-lg text-gray-700 mb-3">Enfrontaments</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {matches.map((match, index) => <MatchCard key={index} match={match} />)}
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 
 const FinalsBracket = ({ categoryName, finalStandings }) => {
     const getTeamName = (group, position) => {
@@ -196,8 +172,8 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
     const BracketItem = ({ top, bottom, label }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="border-l-2 border-b-2 border-gray-300 h-6 w-1/2"></div><div className="border-r-2 border-b-2 border-gray-300 h-6 w-1/2 -mt-6"></div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div><div className="border-l-2 border-gray-300 h-10 w-px"></div><div className="bg-indigo-100 text-indigo-800 p-3 rounded-md w-44 text-center text-sm font-bold shadow-sm">{label}</div></div>);
     const FinalItem = ({ top, bottom }) => (<div className="flex flex-col items-center"><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{top}</div><div className="text-sm font-bold my-2">VS</div><div className="bg-gray-100 p-3 rounded-md w-44 text-center text-sm shadow-sm h-12 flex items-center justify-center">{bottom}</div></div>);
     
-    // Lógica para categorías con 2 grupos de 4 (1ª, 3ª, 4ª)
-    if (categoryName === '1ª' || categoryName === '3ª' || categoryName === '4ª') {
+    // Lógica para categorías con 2 grupos de 4 (1ª, 3ª)
+    if (categoryName === '1ª' || categoryName === '3ª') {
          return (
              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
@@ -217,7 +193,6 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
              </div>
          );
     }
-
     // Lógica especial para 2ª (Grupo 1 de 4, Grupo 2 de 3)
      if (categoryName === '2ª') {
         return (
@@ -239,8 +214,15 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
              </div>
         );
     }
-    
-    // Lógica para 4ª categoria (1 grupo de 4) -> Ahora se gestiona arriba
+    // Lógica para 4ª categoria (1 grupo de 4)
+    if (categoryName === '4ª') {
+         return (
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Fase Final - {categoryName}</h3>
+                <div className="text-center"><h4 className="text-xl font-semibold text-center mb-2 text-green-700">Finals 4ª Categoria</h4><p className="text-sm text-gray-600 mb-4">(Format especial per a 1 grup)</p><div className="flex justify-center items-center space-x-8"><div className="flex-1"><h5 className="text-lg font-semibold text-indigo-600 mb-2">FINAL</h5><FinalItem top={getTeamName('Grup 1', 1)} bottom={getTeamName('Grup 1', 2)}/></div><div className="flex-1"><h5 className="text-lg font-semibold text-orange-600 mb-2">FINAL CONSOLACIÓ</h5><FinalItem top={getTeamName('Grup 1', 3)} bottom={getTeamName('Grup 1', 4)}/></div></div></div>
+            </div>
+        );
+    }
     return null;
 };
 
@@ -316,13 +298,14 @@ export default function App() {
             <div className="flex items-center text-gray-800"><Shield className="w-8 h-8 text-indigo-600 mr-3" /><h1 className="text-xl md:text-3xl font-bold">IV Torneig Pàdel Les Coves</h1></div>
           </div>
           <div className="mt-4 flex items-center space-x-2 bg-gray-100 p-1 rounded-full">
-            <MainNavButton tabName="grups" label="Grups i Classificació" icon={Users} /><MainNavButton tabName="horaris" label="Horaris" icon={Calendar} /><MainNavButton tabName="fasefinal" label="Fase Final" icon={Trophy} /><MainNavButton tabName="normativa" label="Normativa" icon={BookOpen} />
+            <MainNavButton tabName="grups" label="Grups i Classificació" icon={Users} />
+            <MainNavButton tabName="fasefinal" label="Fase Final" icon={Trophy} />
+            <MainNavButton tabName="normativa" label="Normativa" icon={BookOpen} />
           </div>
         </div>
       </header>
       <main className="container mx-auto p-4 md:p-6">
         {activeMainTab === 'grups' && (<div className="animate-fade-in"><div className="mb-6"><div className="flex space-x-1 bg-white p-1 rounded-lg shadow-sm">{Object.keys(tournamentData).map((category) => (<button key={category} onClick={() => setActiveCategoryTab(category)} className={`w-full py-2.5 text-sm md:text-base font-medium leading-5 rounded-lg ${activeCategoryTab === category ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-200/50'}`}>{category}</button>))}</div></div>{standingsByCategory[activeCategoryTab] && Object.entries(standingsByCategory[activeCategoryTab]).map(([groupName, standings]) => (<Group key={groupName} name={groupName} matches={tournamentData[activeCategoryTab][groupName].matches} standings={standings} />))}</div>)}
-        {activeMainTab === 'horaris' && (<div className="bg-white rounded-xl shadow-lg p-6 md:p-8 text-center animate-fade-in"><Calendar className="w-16 h-16 mx-auto text-indigo-500 mb-4" /><h2 className="text-2xl font-bold text-gray-800 mb-2">Horaris dels Partits</h2><p className="text-gray-600">Els horaris dels enfrontaments estan pendents de confirmació. Es publicaran pròximament.</p></div>)}
         {activeMainTab === 'fasefinal' && (<div className="space-y-8 animate-fade-in">{Object.keys(tournamentData).map(category => (<FinalsBracket key={category} categoryName={category} finalStandings={finalStandings[category]} />))}</div>)}
         {activeMainTab === 'normativa' && (<NormativaPanel />)}
       </main>
