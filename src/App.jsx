@@ -110,22 +110,15 @@ const generateMatchesAndResults = (teams) => {
   };
 
   // --- RESULTADOS DE PARTIDOS JUGADOS ---
-  // 1ª Categoría
-  setMatchResult('A5', 'A6', [[3, 6], [6, 7], [null, null]]); // Jonatan Miquel vs Sergi Xavi
-  setMatchResult('A8', 'A7', [[6, 2], [6, 4], [null, null]]); // Angel Miguel vs Alex Fernando
-
-  // 2ª Categoría
-  setMatchResult('B2', 'B3', [[6, 2], [6, 0], [null, null]]); // Toni Ricardo vs Fran Hugo
-  setMatchResult('B7', 'B8', [[7, 5], [6, 0], [null, null]]); // Jordi Óscar vs Hugo Guillem
-
-  // 3ª Categoría
-  setMatchResult('C5', 'C6', [[4, 6], [3, 6], [null, null]]); // Laura Gemma vs Carla Patri
-  setMatchResult('C8', 'C7', [[7, 6], [7, 5], [null, null]]); // Hugo Guillem vs Gustavo Torres
-  setMatchResult('C1', 'C3', [[6, 2], [6, 3], [null, null]]); // Fran César vs Angel Alberto
-
-  // 4ª Categoría
-  setMatchResult('D1', 'D2', [[6, 3], [2, 6], [5, 10]]); // Jordi Mariano vs Alma Paula (super tie-break)
-  setMatchResult('D4', 'D3', [[6, 1], [6, 4], [null, null]]); // Alba Leti vs Agnés Ainoa
+  useEffect(() => {
+    fetch('/results.json')
+      .then(response => response.json())
+      .then(data => {
+        data.results.forEach(result => {
+          setMatchResult(result.team1, result.team2, result.sets);
+        });
+      });
+  }, []);
 
   return matches;
 };
