@@ -13,7 +13,7 @@ const initialTournamentData = {
   },
   '3ª': {
     'Grup 1': [ { id: 'C1', name: 'Fran / Cesar' }, { id: 'C2', name: 'Robert / Carmelo' }, { id: 'C3', name: 'Alberto / Angel' }, { id: 'C4', name: 'Miguel T. / Joan' } ],
-    'Grup 2': [ { id: 'C5', name: 'Laura / Gemma' }, { id: 'C6', name: 'Carla / Patri' }, { id: 'C7', name: 'Jose A. / Gustau' }, { id: 'C8', 'name': 'Hugo / Guillem' } ],
+    'Grup 2': [ { id: 'C5', name: 'Laura / Gemma' }, { id: 'C6', name: 'Carla / Patri' }, { id: 'C7', name: 'Jose A. / Gustau' }, { id: 'C8', name: 'Hugo / Guillem' } ],
   },
   '4ª': {
     'Grup 1': [ { id: 'D1', name: 'Mariano / Jordi M.' }, { id: 'D2', name: 'Alma / Paula' }, { id: 'D3', name: 'Agnes / Ainoa' }, { id: 'D4', name: 'Alba / Leticia' } ],
@@ -95,17 +95,16 @@ const generateMatchesAndResults = (teams) => {
   // Partits pendents de data
   findAndSchedule('A6', 'A7', 'Pendent de data');
   findAndSchedule('C6', 'C8', 'Pendent de data');
-  findAndSchedule('C7', 'C8', 'Pendent de data'); // Re-revisando, C7 vs C8 del 3-Jul ya está. C6 vs C8 del 7-Jul ya está.
-  // El C8 vs Hugo/Guillem del 22-Jul es un error en la foto. Y C5 vs Carla/Patri es C5 vs C6.
-  // C7 vs Torres/Gustau del 24-Jul es C7 vs C7, error. Debe ser C7 vs C5. Pero ese ya está el 7-Jul.
-  // C2 vs Robert/Carmelo del 24-Jul ya está el 14-Jul.
-  // C3 vs Alberto/Angel Gori del 24-Jul ya está el 3-Jul.
-  // Hay duplicados en las últimas fotos, he priorizado las primeras fechas.
+  findAndSchedule('C7', 'C8', 'Pendent de data'); 
 
-  const setMatchResult = (t1, t2, sets) => {
-    const match = matches.find(m => (m.team1.id === t1 && m.team2.id === t2) || (m.team1.id === t2 && m.team2.id === t1));
+  const setMatchResult = (inputTeam1Id, inputTeam2Id, inputSets) => {
+    const match = matches.find(m => (m.team1.id === inputTeam1Id && m.team2.id === inputTeam2Id) || (m.team1.id === inputTeam2Id && m.team2.id === inputTeam1Id));
     if (match) {
-      match.sets = sets;
+      let finalSets = inputSets;
+      if (match.team1.id === inputTeam2Id && match.team2.id === inputTeam1Id) {
+        finalSets = inputSets.map(set => [set[1], set[0]]);
+      }
+      match.sets = finalSets;
       match.played = true;
     }
   };
@@ -151,7 +150,15 @@ const getStandings = (teams, matches) => {
                     }
                 }
             }
-            team1Stats.P += team1SetsWon; team2Stats.P += team2SetsWon;
+            
+            if (team1SetsWon > team2SetsWon) {
+                team1Stats.P += 3; // 3 puntos por victoria
+                team2Stats.P += 1; // 1 punto por derrota
+            } else {
+                team2Stats.P += 3; // 3 puntos por victoria
+                team1Stats.P += 1; // 1 punto por derrota
+            }
+
             team1Stats.SG += team1SetsWon; team1Stats.SP += team2SetsWon;
             team2Stats.SG += team2SetsWon; team2Stats.SP += team1SetsWon;
         }
@@ -189,12 +196,12 @@ const ClassificationTable = ({ standings }) => (
                         <th scope="row" className="px-4 py-4 font-medium text-neutral-100 whitespace-nowrap">{s.teamName}</th>
                         <td className="px-3 py-4 text-center font-bold text-primary-400">{s.P}</td>
                         <td className="px-3 py-4 text-center">{s.PJ}</td>
-                        <td className="px-3 py-4 text-center text-primary-300">{s.SG}</td>
-                        <td className="px-3 py-4 text-center text-secondary-300">{s.SP}</td>
-                        <td className={`px-3 py-4 text-center font-medium ${s.SG - s.SP >= 0 ? 'text-primary-400' : 'text-secondary-400'}`}>{s.SG - s.SP}</td>
-                        <td className="px-3 py-4 text-center text-primary-300">{s.JG}</td>
-                        <td className="px-3 py-4 text-center text-secondary-300">{s.JP}</td>
-                        <td className={`px-3 py-4 text-center font-medium ${s.JG - s.JP >= 0 ? 'text-primary-400' : 'text-secondary-400'}`}>{s.JG - s.JP}</td>
+                        <td className="px-3 py-4 text-center text-green-400">{s.SG}</td>
+                        <td className="px-3 py-4 text-center text-red-400">{s.SP}</td>
+                        <td className={`px-3 py-4 text-center font-medium ${s.SG - s.SP >= 0 ? 'text-green-400' : 'text-red-400'}`}>{s.SG - s.SP}</td>
+                        <td className="px-3 py-4 text-center text-green-400">{s.JG}</td>
+                        <td className="px-3 py-4 text-center text-red-400">{s.JP}</td>
+                        <td className={`px-3 py-4 text-center font-medium ${s.JG - s.JP >= 0 ? 'text-green-400' : 'text-red-400'}`}>{s.JG - s.JP}</td>
                     </tr>
                 ))}
             </tbody>
@@ -204,23 +211,45 @@ const ClassificationTable = ({ standings }) => (
 
 const MatchCard = ({ match }) => {
     const getMatchResult = () => {
-        if (!match.played) return 'Pendent';
-        let res = `${match.sets[0][0]}-${match.sets[0][1]}, ${match.sets[1][0]}-${match.sets[1][1]}`;
-        if (match.sets[2][0] !== null && match.sets[2][1] !== null) { res += `, ${match.sets[2][0]}-${match.sets[2][1]}`; }
-        return res;
+        if (!match.played) return { result: 'Pendent', winner: null };
+
+        let team1SetsWon = 0;
+        let team2SetsWon = 0;
+        const sets = match.sets.filter(s => s[0] !== null && s[1] !== null);
+
+        for (const set of sets) {
+            if (set[0] > set[1]) {
+                team1SetsWon++;
+            } else {
+                team2SetsWon++;
+            }
+        }
+
+        const resultString = sets.map(s => `${s[0]}-${s[1]}`).join(', ');
+        const winner = team1SetsWon > team2SetsWon ? match.team1 : match.team2;
+
+        return { result: resultString, winner };
     };
+
+    const { result, winner } = getMatchResult();
+
+    const TeamDisplay = ({ team, isWinner }) => (
+        <p className={`font-semibold text-neutral-100 ${isWinner ? 'text-primary-400 font-bold' : ''}`}>
+            {team.name}
+        </p>
+    );
 
     return (
         <div className={`bg-neutral-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 ${match.played ? 'border-primary-500' : 'border-secondary-400'} flex flex-col animate-fade-in hover:scale-105`}>
             <div className="p-4 flex-grow">
                 <div className="flex flex-col items-center text-center">
-                    <p className="font-semibold text-neutral-100">{match.team1.name}</p>
+                    <TeamDisplay team={match.team1} isWinner={winner?.id === match.team1.id} />
                     <span className="text-sm font-bold text-neutral-400 my-1">VS</span>
-                    <p className="font-semibold text-neutral-100">{match.team2.name}</p>
+                    <TeamDisplay team={match.team2} isWinner={winner?.id === match.team2.id} />
                 </div>
             </div>
             <div className="border-t border-neutral-700 p-3 bg-neutral-700 text-center">
-                <p className="text-lg font-bold text-primary-400">{getMatchResult()}</p>
+                <p className="text-lg font-bold text-primary-400">{result}</p>
             </div>
             <div className="border-t border-neutral-600 p-2 bg-neutral-700 rounded-b-lg text-center flex items-center justify-center">
                 <Calendar className="w-4 h-4 mr-2 text-neutral-400" />
@@ -311,13 +340,13 @@ const NormativaPanel = () => (
                 <p><strong>Inici del torneig:</strong> Dimarts, 1 de juliol de 2025.</p>
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
                 <p><strong>Format dels partits:</strong> Tots els partits de la fase de grups es jugaran al millor de 3 sets. Els dos primers sets es juguen de forma habitual. En cas d'empat a un set, el tercer es decidirà mitjançant un <strong>súper tie-break a 10 punts</strong>.</p>
-                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons els següents criteris: 1º Punts (cada set guanyat suma 1 punt), 2º Diferència de sets (SG - SP), 3º Diferència de jocs (JG - JP).</p>
-                <div className="mt-6 bg-secondary-900 border-l-4 border-secondary-400 p-4 rounded-r-lg">
+                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons els següents criteris: 1º Punts (3 per victòria, 1 per derrota), 2º Diferència de sets (SG - SP), 3º Diferència de jocs (JG - JP).</p>
+                <div className="mt-6 bg-red-900/50 border-l-4 border-red-400 p-4 rounded-r-lg">
                     <div className="flex">
-                        <div className="py-1"><AlertTriangle className="h-6 w-6 text-secondary-400 mr-3" /></div>
+                        <div className="py-1"><AlertTriangle className="h-6 w-6 text-red-400 mr-3" /></div>
                         <div>
-                            <p className="font-bold text-secondary-100">Norma Important</p>
-                            <p className="text-sm text-secondary-200">Les partides no acabades de grups abans del 27/07 es donaran por perdudes 2-0 (sets) i 6/0 6/0 per a la parella que no ha pogut jugar segons els horaris establerts. És important posar el resultat al grup de WhatsApp de cada categoria al finalitzar per poder actualitzar la web.</p>
+                            <p className="font-bold text-red-100">Norma Important</p>
+                            <p className="text-sm text-red-200">Les partides no acabades de grups abans del 27/07 es donaran por perdudes 2-0 (sets) i 6/0 6/0 per a la parella que no ha pogut jugar segons els horaris establerts. És important posar el resultat al grup de WhatsApp de cada categoria al finalitzar per poder actualitzar la web.</p>
                         </div>
                     </div>
                 </div>
@@ -374,7 +403,7 @@ export default function App() {
     return finalData;
   }, [tournamentData, standingsByCategory]);
 
-  const MainNavButton = ({ tabName, label, icon: Icon }) => (<button onClick={() => setActiveMainTab(tabName)} className={`flex-1 flex justify-center items-center px-3 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${activeMainTab === tabName ? 'bg-primary-500 text-white shadow-lg' : 'text-neutral-300 hover:bg-neutral-700'}`}><Icon className="w-5 h-5 mr-2" /><span>{label}</span></button>);
+  const MainNavButton = ({ tabName, label, icon: Icon }) => (<button onClick={() => setActiveMainTab(tabName)} className={`flex-1 flex justify-center items-center px-3 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${activeMainTab === tabName ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-300 hover:bg-neutral-700'}`}><Icon className="w-5 h-5 mr-2" /><span>{label}</span></button>);
 
   return (
     <div className="min-h-screen font-sans bg-neutral-900 text-neutral-100">
