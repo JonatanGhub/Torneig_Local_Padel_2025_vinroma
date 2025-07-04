@@ -20,7 +20,7 @@ const initialTournamentData = {
   },
 };
 
-// --- FUNCIÓN PARA GENERAR PARTIDOS Y RESULTADOS ---
+// --- FUNCIÓN PARA GENERAR PARTIDOS ---
 const generateMatches = (teams) => {
   const matches = [];
   if (!teams) return matches;
@@ -36,67 +36,6 @@ const generateMatches = (teams) => {
       });
     }
   }
-  
-  const findAndSchedule = (t1, t2, schedule) => {
-    const match = matches.find(m => (m.team1.id === t1 && m.team2.id === t2) || (m.team1.id === t2 && m.team2.id === t1));
-    if (match) match.schedule = schedule;
-  };
-
-  // --- HORARIOS CORREGIDOS Y COMPLETOS ---
-  // SETMANA 1 (1-5 Jul)
-  findAndSchedule('D1', 'D2', 'Dimarts 1, 19:30');
-  findAndSchedule('D3', 'D4', 'Dimarts 1, 20:30');
-  findAndSchedule('C5', 'C6', 'Dimarts 1, 21:30');
-  findAndSchedule('B2', 'B3', 'Dimarts 1, 22:00 PISTA DALT');
-  findAndSchedule('A5', 'A6', 'Dimecres 2, 19:30');
-  findAndSchedule('B5', 'B8', 'Dimecres 2, 20:30'); // Corregido: B5 vs B8 (Juan/German vs Guillem/Hugo)
-  findAndSchedule('B6', 'B7', 'Dimecres 2, 21:30'); // Corregido: B6 vs B7 (Iago/Carlos vs Oscar/Jordi G)
-  findAndSchedule('C7', 'C8', 'Dijous 3, 19:30');
-  findAndSchedule('C1', 'C3', 'Dijous 3, 20:30');
-  findAndSchedule('A7', 'A8', 'Dijous 3, 21:30');
-  findAndSchedule('C3', 'C4', 'Dissabte 5, 19:30');
-
-  // SETMANA 2 (7-10 Jul)
-  findAndSchedule('A3', 'A4', 'Dilluns 7, 19:30');
-  findAndSchedule('C5', 'C7', 'Dilluns 7, 20:30');
-  findAndSchedule('A1', 'A2', 'Dimarts 8, 19:30');
-  findAndSchedule('A6', 'A8', 'Dimarts 8, 20:30');
-  findAndSchedule('B1', 'B3', 'Dimarts 8, 21:30');
-  findAndSchedule('D1', 'D4', 'Dimecres 9, 19:30');
-  findAndSchedule('B5', 'B7', 'Dimecres 9, 20:30');
-  findAndSchedule('B6', 'B8', 'Dimecres 9, 21:30');
-  findAndSchedule('A2', 'A4', 'Dijous 10, 19:30');
-  findAndSchedule('D2', 'D3', 'Dijous 10, 20:30');
-
-  // SETMANA 3 (14-17 Jul)
-  findAndSchedule('C1', 'C2', 'Dilluns 14, 19:30');
-  findAndSchedule('A5', 'A8', 'Dilluns 14, 20:30');
-  findAndSchedule('B3', 'B4', 'Dilluns 14, 21:30');
-  findAndSchedule('A1', 'A3', 'Dimarts 15, 19:30'); // Corregido
-  findAndSchedule('B1', 'B2', 'Dimarts 15, 20:30');
-  findAndSchedule('A5', 'A7', 'Dimarts 15, 21:30');
-  findAndSchedule('A1', 'A4', 'Dimecres 16, 19:30');
-  findAndSchedule('B1', 'B4', 'Dimecres 16, 20:30');
-  findAndSchedule('C5', 'C8', 'Dimecres 16, 21:30');
-  findAndSchedule('C2', 'C4', 'Dijous 17, 19:30');
-  findAndSchedule('B2', 'B4', 'Dijous 17, 20:30');
-
-  // SETMANA 4 (21-24 Jul)
-  findAndSchedule('A2', 'A3', 'Dilluns 21, 19:30');
-  findAndSchedule('C1', 'C4', 'Dilluns 21, 20:30');
-  findAndSchedule('D1', 'D3', 'Dilluns 21, 21:30');
-  findAndSchedule('C5', 'C6', 'Dimarts 22, 20:00'); // Corregido C5 vs C6
-  findAndSchedule('D2', 'D4', 'Dimarts 22, 21:00');
-  findAndSchedule('B6', 'B7', 'Dimecres 23, 20:00');
-  findAndSchedule('B5', 'B8', 'Dimecres 23, 21:00');
-  findAndSchedule('C6', 'C7', 'Dijous 24, 20:00');
-  findAndSchedule('C2', 'C3', 'Dijous 24, 21:00');
-
-  // Partits pendents de data
-  findAndSchedule('A6', 'A7', 'Pendent de data');
-  findAndSchedule('C6', 'C8', 'Pendent de data');
-  findAndSchedule('C7', 'C8', 'Pendent de data'); 
-
   return matches;
 };
 
@@ -104,40 +43,64 @@ const generateMatches = (teams) => {
 
 const getStandings = (teams, matches) => {
     const stats = teams.reduce((acc, team) => { acc[team.id] = { teamId: team.id, teamName: team.name, P: 0, PJ: 0, SG: 0, SP: 0, JG: 0, JP: 0 }; return acc; }, {});
+    
     matches.forEach(match => {
         if (match.played) {
             const team1Stats = stats[match.team1.id];
             const team2Stats = stats[match.team2.id];
-            team1Stats.PJ++; team2Stats.PJ++;
-            let team1SetsWon = 0, team2SetsWon = 0;
-            for (let i = 0; i < match.sets.length; i++) {
-                const set = match.sets[i];
+            team1Stats.PJ++;
+            team2Stats.PJ++;
+
+            let team1SetsWon = 0;
+            let team2SetsWon = 0;
+            
+            match.sets.forEach((set, index) => {
                 if (set[0] !== null && set[1] !== null) {
-                    if (set[0] > set[1]) team1SetsWon++; else team2SetsWon++;
-                    if (i < 2) { 
-                        team1Stats.JG += set[0]; team1Stats.JP += set[1];
-                        team2Stats.JG += set[1]; team2Stats.JP += set[0];
+                    if (set[0] > set[1]) team1SetsWon++;
+                    else team2SetsWon++;
+                    
+                    // Solo sumar juegos de los 2 primeros sets para la diferencia de juegos
+                    if (index < 2) {
+                        team1Stats.JG += set[0];
+                        team1Stats.JP += set[1];
+                        team2Stats.JG += set[1];
+                        team2Stats.JP += set[0];
                     }
                 }
-            }
-            
-            if (team1SetsWon > team2SetsWon) {
-                team1Stats.P += 3; // 3 puntos por victoria
-                team2Stats.P += 1; // 1 punto por derrota
-            } else {
-                team2Stats.P += 3; // 3 puntos por victoria
-                team1Stats.P += 1; // 1 punto por derrota
-            }
+            });
 
-            team1Stats.SG += team1SetsWon; team1Stats.SP += team2SetsWon;
-            team2Stats.SG += team2SetsWon; team2Stats.SP += team1SetsWon;
+            team1Stats.P += team1SetsWon;
+            team2Stats.P += team2SetsWon;
+            team1Stats.SG += team1SetsWon;
+            team1Stats.SP += team2SetsWon;
+            team2Stats.SG += team2SetsWon;
+            team2Stats.SP += team1SetsWon;
         }
     });
+
     return Object.values(stats).sort((a, b) => {
         if (b.P !== a.P) return b.P - a.P;
-        const setDiffA = a.SG - a.SP; const setDiffB = b.SG - b.SP;
+
+        // Desempate por enfrentamiento directo
+        const directMatch = matches.find(m => m.played && ((m.team1.id === a.teamId && m.team2.id === b.teamId) || (m.team1.id === b.teamId && m.team2.id === a.teamId)));
+        if (directMatch) {
+            let aSets = 0;
+            directMatch.sets.forEach(set => {
+                if (set[0] !== null && set[1] !== null) {
+                    if (directMatch.team1.id === a.teamId && set[0] > set[1]) aSets++;
+                    if (directMatch.team2.id === a.teamId && set[1] > set[0]) aSets++;
+                }
+            });
+            if (aSets > 1) return -1; // a gana
+            if (aSets < 1) return 1;  // b gana
+        }
+
+        const setDiffA = a.SG - a.SP;
+        const setDiffB = b.SG - b.SP;
         if (setDiffB !== setDiffA) return setDiffB - setDiffA;
-        const gameDiffA = a.JG - a.JP; const gameDiffB = b.JG - b.JP;
+
+        const gameDiffA = a.JG - a.JP;
+        const gameDiffB = b.JG - b.JP;
         return gameDiffB - gameDiffA;
     });
 };
@@ -309,8 +272,8 @@ const NormativaPanel = () => (
             <div className="space-y-4 text-neutral-300">
                 <p><strong>Inici del torneig:</strong> Dimarts, 1 de juliol de 2025.</p>
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
-                <p><strong>Format dels partits:</strong> Tots els partits de la fase de grups es jugaran al millor de 3 sets. Els dos primers sets es juguen de forma habitual. En cas d'empat a un set, el tercer es decidirà mitjançant un <strong>súper tie-break a 10 punts</strong>.</p>
-                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons els següents criteris: 1º Punts (3 per victòria, 1 per derrota), 2º Diferència de sets (SG - SP), 3º Diferència de jocs (JG - JP).</p>
+                <p><strong>Format dels partits:</strong> Fase de grups al millor de 3 sets (tercer súper tie-break a 10 punts). Fase final a 3 sets convencionals. El joc exterior serà permès si s'acorda entre les parelles abans de l'inici del partit.</p>
+                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per set guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
                 <div className="mt-6 bg-red-900/50 border-l-4 border-red-400 p-4 rounded-r-lg">
                     <div className="flex">
                         <div className="py-1"><AlertTriangle className="h-6 w-6 text-red-400 mr-3" /></div>
@@ -343,29 +306,43 @@ export default function App() {
   const [activeMainTab, setActiveMainTab] = useState('grups');
 
   useEffect(() => {
-    fetch('/results.json')
-      .then(response => response.json())
-      .then(data => {
-        setTournamentData(currentData => {
-          const updatedData = JSON.parse(JSON.stringify(currentData)); // Deep copy
-          data.results.forEach(result => {
-            for (const category in updatedData) {
-              for (const group in updatedData[category]) {
-                const match = updatedData[category][group].matches.find(m => (m.team1.id === result.team1 && m.team2.id === result.team2) || (m.team1.id === result.team2 && m.team2.id === result.team1));
-                if (match) {
-                  let finalSets = result.sets;
-                  if (match.team1.id === result.team2 && match.team2.id === result.team1) {
-                    finalSets = result.sets.map(set => [set[1], set[0]]);
-                  }
-                  match.sets = finalSets;
-                  match.played = true;
-                }
+    const fetchSchedules = fetch('/schedules.json').then(res => res.json());
+    const fetchResults = fetch('/results.json').then(res => res.json());
+
+    Promise.all([fetchSchedules, fetchResults]).then(([schedulesData, resultsData]) => {
+      setTournamentData(currentData => {
+        const updatedData = JSON.parse(JSON.stringify(currentData));
+
+        schedulesData.schedules.forEach(schedule => {
+          for (const category in updatedData) {
+            for (const group in updatedData[category]) {
+              const match = updatedData[category][group].matches.find(m => (m.team1.id === schedule.team1Id && m.team2.id === schedule.team2Id) || (m.team1.id === schedule.team2Id && m.team2.id === schedule.team1Id));
+              if (match) {
+                match.schedule = schedule.schedule;
               }
             }
-          });
-          return updatedData;
+          }
         });
+
+        resultsData.results.forEach(result => {
+          for (const category in updatedData) {
+            for (const group in updatedData[category]) {
+              const match = updatedData[category][group].matches.find(m => (m.team1.id === result.team1 && m.team2.id === result.team2) || (m.team1.id === result.team2 && m.team2.id === result.team1));
+              if (match) {
+                let finalSets = result.sets;
+                if (match.team1.id === result.team2 && match.team2.id === result.team1) {
+                  finalSets = result.sets.map(set => [set[1], set[0]]);
+                }
+                match.sets = finalSets;
+                match.played = true;
+              }
+            }
+          }
+        });
+
+        return updatedData;
       });
+    });
   }, []);
 
   const standingsByCategory = useMemo(() => {
@@ -386,6 +363,10 @@ export default function App() {
         const categoryGroups = tournamentData[category];
         let allMatchesPlayed = true;
         for (const group in categoryGroups) {
+            if (Object.keys(categoryGroups[group]).length === 0) { // Check if group is empty
+              allMatchesPlayed = false;
+              break;
+            }
             if (categoryGroups[group].matches.some(m => !m.played)) {
                 allMatchesPlayed = false;
                 break;
