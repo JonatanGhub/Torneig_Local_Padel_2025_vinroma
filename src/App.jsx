@@ -21,7 +21,7 @@ const initialTournamentData = {
 };
 
 // --- FUNCIÓN PARA GENERAR PARTIDOS Y RESULTADOS ---
-const generateMatchesAndResults = (teams) => {
+const generateMatches = (teams) => {
   const matches = [];
   if (!teams) return matches;
 
@@ -96,29 +96,6 @@ const generateMatchesAndResults = (teams) => {
   findAndSchedule('A6', 'A7', 'Pendent de data');
   findAndSchedule('C6', 'C8', 'Pendent de data');
   findAndSchedule('C7', 'C8', 'Pendent de data'); 
-
-  const setMatchResult = (inputTeam1Id, inputTeam2Id, inputSets) => {
-    const match = matches.find(m => (m.team1.id === inputTeam1Id && m.team2.id === inputTeam2Id) || (m.team1.id === inputTeam2Id && m.team2.id === inputTeam1Id));
-    if (match) {
-      let finalSets = inputSets;
-      if (match.team1.id === inputTeam2Id && match.team2.id === inputTeam1Id) {
-        finalSets = inputSets.map(set => [set[1], set[0]]);
-      }
-      match.sets = finalSets;
-      match.played = true;
-    }
-  };
-
-  // --- RESULTADOS DE PARTIDOS JUGADOS ---
-  useEffect(() => {
-    fetch('/results.json')
-      .then(response => response.json())
-      .then(data => {
-        data.results.forEach(result => {
-          setMatchResult(result.team1, result.team2, result.sets);
-        });
-      });
-  }, []);
 
   return matches;
 };
@@ -360,10 +337,31 @@ export default function App() {
       processedData[category] = {};
       for (const group in initialTournamentData[category]) {
         const teams = initialTournamentData[category][group];
-        processedData[category][group] = { teams: teams, matches: generateMatchesAndResults(teams) };
+        const matches = generateMatches(teams);
+        processedData[category][group] = { teams: teams, matches: matches };
       }
     }
-    setTournamentData(processedData);
+
+    fetch('/results.json')
+      .then(response => response.json())
+      .then(data => {
+        data.results.forEach(result => {
+          for (const category in processedData) {
+            for (const group in processedData[category]) {
+              const match = processedData[category][group].matches.find(m => (m.team1.id === result.team1 && m.team2.id === result.team2) || (m.team1.id === result.team2 && m.team2.id === result.team1));
+              if (match) {
+                let finalSets = result.sets;
+                if (match.team1.id === result.team2 && match.team2.id === result.team1) {
+                  finalSets = result.sets.map(set => [set[1], set[0]]);
+                }
+                match.sets = finalSets;
+                match.played = true;
+              }
+            }
+          }
+        });
+        setTournamentData(processedData);
+      });
   }, []);
 
   const standingsByCategory = useMemo(() => {
