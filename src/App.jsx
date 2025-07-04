@@ -167,7 +167,7 @@ const MatchCard = ({ match }) => {
     const { result, winner } = getMatchResult();
 
     const TeamDisplay = ({ team, isWinner }) => (
-        <p className={`font-semibold text-neutral-100 ${isWinner ? 'text-primary-400 font-bold' : ''}`}>
+        <p className={`font-semibold text-neutral-100 ${isWinner ? 'font-bold text-lg' : ''}`}>
             {team.name}
         </p>
     );
@@ -334,7 +334,9 @@ export default function App() {
                   finalSets = result.sets.map(set => [set[1], set[0]]);
                 }
                 match.sets = finalSets;
-                match.played = true;
+                if (finalSets.some(s => s[0] !== null || s[1] !== null)) {
+                  match.played = true;
+                }
               }
             }
           }
