@@ -327,40 +327,44 @@ const NormativaPanel = () => (
 
 // --- MAIN APP COMPONENT ---
 export default function App() {
-  const [tournamentData, setTournamentData] = useState({});
+  const [tournamentData, setTournamentData] = useState(() => {
+    const initialData = {};
+    for (const category in initialTournamentData) {
+      initialData[category] = {};
+      for (const group in initialTournamentData[category]) {
+        const teams = initialTournamentData[category][group];
+        const matches = generateMatches(teams);
+        initialData[category][group] = { teams, matches };
+      }
+    }
+    return initialData;
+  });
   const [activeCategoryTab, setActiveCategoryTab] = useState('1ª');
   const [activeMainTab, setActiveMainTab] = useState('grups');
 
   useEffect(() => {
-    const processedData = {};
-    for (const category in initialTournamentData) {
-      processedData[category] = {};
-      for (const group in initialTournamentData[category]) {
-        const teams = initialTournamentData[category][group];
-        const matches = generateMatches(teams);
-        processedData[category][group] = { teams: teams, matches: matches };
-      }
-    }
-
     fetch('/results.json')
       .then(response => response.json())
       .then(data => {
-        data.results.forEach(result => {
-          for (const category in processedData) {
-            for (const group in processedData[category]) {
-              const match = processedData[category][group].matches.find(m => (m.team1.id === result.team1 && m.team2.id === result.team2) || (m.team1.id === result.team2 && m.team2.id === result.team1));
-              if (match) {
-                let finalSets = result.sets;
-                if (match.team1.id === result.team2 && match.team2.id === result.team1) {
-                  finalSets = result.sets.map(set => [set[1], set[0]]);
+        setTournamentData(currentData => {
+          const updatedData = JSON.parse(JSON.stringify(currentData)); // Deep copy
+          data.results.forEach(result => {
+            for (const category in updatedData) {
+              for (const group in updatedData[category]) {
+                const match = updatedData[category][group].matches.find(m => (m.team1.id === result.team1 && m.team2.id === result.team2) || (m.team1.id === result.team2 && m.team2.id === result.team1));
+                if (match) {
+                  let finalSets = result.sets;
+                  if (match.team1.id === result.team2 && match.team2.id === result.team1) {
+                    finalSets = result.sets.map(set => [set[1], set[0]]);
+                  }
+                  match.sets = finalSets;
+                  match.played = true;
                 }
-                match.sets = finalSets;
-                match.played = true;
               }
             }
-          }
+          });
+          return updatedData;
         });
-        setTournamentData(processedData);
       });
   }, []);
 
