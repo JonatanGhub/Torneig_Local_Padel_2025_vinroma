@@ -273,7 +273,7 @@ const NormativaPanel = () => (
                 <p><strong>Inici del torneig:</strong> Dimarts, 1 de juliol de 2025.</p>
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
                 <p><strong>Format dels partits:</strong> Fase de grups al millor de 3 sets (tercer súper tie-break a 10 punts). Fase final a 3 sets convencionals. El joc exterior serà permès si s'acorda entre les parelles abans de l'inici del partit.</p>
-                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per set guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
+                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1�� Punts (1 punt per set guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
                 <div className="mt-6 bg-red-900/50 border-l-4 border-red-400 p-4 rounded-r-lg">
                     <div className="flex">
                         <div className="py-1"><AlertTriangle className="h-6 w-6 text-red-400 mr-3" /></div>
