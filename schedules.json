@@ -7,7 +7,7 @@
     { "team1Id": "A5", "team2Id": "A6", "schedule": "Dimecres 2, 19:30" },
     { "team1Id": "B5", "team2Id": "B8", "schedule": "Dimecres 2, 20:30" },
     { "team1Id": "B6", "team2Id": "B7", "schedule": "Dimecres 2, 21:30" },
-    { "team1Id": "C7", "team2Id": "C8", "schedule": "Dijous 3, 19:30" },
+    { "team1Id": "B7", "team2Id": "B8", "schedule": "Dijous 3, 19:30" },
     { "team1Id": "C1", "team2Id": "C3", "schedule": "Dijous 3, 20:30" },
     { "team1Id": "A7", "team2Id": "A8", "schedule": "Dijous 3, 21:30" },
     { "team1Id": "C3", "team2Id": "C4", "schedule": "Dissabte 5, 19:30" },
