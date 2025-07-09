@@ -9,7 +9,7 @@ const initialTournamentData = {
   },
   '2ª': {
     'Grup 1': [ { id: 'B1', name: 'Xavi / Andres' }, { id: 'B2', name: 'Toni / Ricardo' }, { id: 'B3', name: 'Hugo / Fran' }, { id: 'B4', name: 'Nestor / Borja' } ],
-    'Grup 2': [ { id: 'B8', name: 'Juan / German' }, { id: 'B7', name: 'Iago / Carlos' }, { id: 'B5', name: 'Oscar / Jordi G.' }, { id: 'B6', name: 'Guillem / Hugo' } ],
+    'Grup 2': [ { id: 'B5', name: 'Juan / German' }, { id: 'B6', name: 'Iago / Carlos' }, { id: 'B7', name: 'Oscar / Jordi G.' }, { id: 'B8', name: 'Guillem / Hugo' } ],
   },
   '3ª': {
     'Grup 1': [ { id: 'C1', name: 'Fran / Cesar' }, { id: 'C2', name: 'Robert / Carmelo' }, { id: 'C3', name: 'Alberto / Angel' }, { id: 'C4', name: 'Miguel T. / Joan' } ],
@@ -363,17 +363,16 @@ export default function App() {
     const finalData = {};
     for (const category in tournamentData) {
         const categoryGroups = tournamentData[category];
+        if (!categoryGroups || Object.keys(categoryGroups).length === 0) continue;
+
         let allMatchesPlayed = true;
         for (const group in categoryGroups) {
-            if (Object.keys(categoryGroups[group]).length === 0) { // Check if group is empty
-              allMatchesPlayed = false;
-              break;
-            }
-            if (categoryGroups[group].matches.some(m => !m.played)) {
+            if (!categoryGroups[group].matches || categoryGroups[group].matches.some(m => !m.played)) {
                 allMatchesPlayed = false;
                 break;
             }
         }
+
         if (allMatchesPlayed) {
             finalData[category] = standingsByCategory[category];
         }
