@@ -16,7 +16,6 @@
     { "team1Id": "A1", "team2Id": "A2", "schedule": "Dimarts 8, 19:30" },
     { "team1Id": "A6", "team2Id": "A8", "schedule": "Dimarts 8, 20:30" },
     { "team1Id": "B1", "team2Id": "B3", "schedule": "Dimecres 9, 19:30 // SUSPÉS" },
-    { "team1Id": "B2", "team2Id": "B4", "schedule": "Dimecres 9, 21:30 // SUSPÉS" },
     { "team1Id": "B6", "team2Id": "B8", "schedule": "Dissabte 12,19:00" },
     { "team1Id": "C5", "team2Id": "C8", "schedule": "Dijous 10, 21:30" },
     { "team1Id": "D2", "team2Id": "D3", "schedule": "Dijous 10, 20:30" },
