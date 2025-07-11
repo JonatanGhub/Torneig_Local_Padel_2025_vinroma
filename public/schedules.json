@@ -17,10 +17,10 @@
     { "team1Id": "A6", "team2Id": "A8", "schedule": "Dimarts 8, 20:30" },
     { "team1Id": "B1", "team2Id": "B3", "schedule": "Dimecres 9, 19:30 // SUSPÉS" },
     { "team1Id": "B2", "team2Id": "B4", "schedule": "Dimecres 9, 21:30 // SUSPÉS" },
-    { "team1Id": "B6", "team2Id": "B8", "schedule": "Dimecres 9, 20:30 // SUSPÉS" },
+    { "team1Id": "B6", "team2Id": "B8", "schedule": "Dissabte 12,19:00" },
     { "team1Id": "C5", "team2Id": "C8", "schedule": "Dijous 10, 21:30" },
     { "team1Id": "D2", "team2Id": "D3", "schedule": "Dijous 10, 20:30" },
-    { "team1Id": "A6", "team2Id": "A7", "schedule": "Dijous 10, 20:30 - PISTA DE DALT" },
+    { "team1Id": "A6", "team2Id": "A7", "schedule": "Pendent de data" },
     { "team1Id": "C1", "team2Id": "C2", "schedule": "Dilluns 14, 19:30" },
     { "team1Id": "B5", "team2Id": "B7", "schedule": "Dilluns 14, 20:30" },
     { "team1Id": "B3", "team2Id": "B4", "schedule": "Dilluns 14, 21:30" },
@@ -42,9 +42,6 @@
     { "team1Id": "B5", "team2Id": "B8", "schedule": "Dilluns 7, 21:30" },
     { "team1Id": "C6", "team2Id": "C7", "schedule": "Dijous 24, 20:00" },
     { "team1Id": "C2", "team2Id": "C3", "schedule": "Dijous 24, 21:00" },
-    { "team1Id": "C7", "team2Id": "C8", "schedule": "Pendent de data" },
-    { "team1Id": "B1", "team2Id": "B3", "schedule": "Pendent de data" },
-    { "team1Id": "B6", "team2Id": "B8", "schedule": "Pendent de data" },
      { "team1Id": "B2", "team2Id": "B4", "schedule": "Pendent de data" }
   ]
 }
