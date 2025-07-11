@@ -42,6 +42,6 @@
     { "team1Id": "B5", "team2Id": "B8", "schedule": "Dilluns 7, 21:30" },
     { "team1Id": "C6", "team2Id": "C7", "schedule": "Dijous 24, 20:00" },
     { "team1Id": "C2", "team2Id": "C3", "schedule": "Dijous 24, 21:00" },
-     { "team1Id": "B2", "team2Id": "B4", "schedule": "Pendent de data" }
+     { "team1Id": "B2", "team2Id": "B4", "schedule": "Divendres 11 22:00" }
   ]
 }
