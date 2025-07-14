@@ -363,8 +363,8 @@ export default function App() {
   const MainNavButton = ({ tabName, label, icon: Icon }) => (<button onClick={() => setActiveMainTab(tabName)} className={`flex-1 flex justify-center items-center px-3 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${activeMainTab === tabName ? 'bg-primary-600 text-white shadow-lg' : 'text-slate-600 hover:bg-slate-200'}`}><Icon className="w-5 h-5 mr-2" /><span>{label}</span></button>);
 
   return (
-    <div className="min-h-screen font-sans bg-slate-100 text-slate-800">
-      <header className="bg-white/80 shadow-md sticky top-0 z-40 backdrop-blur-sm">
+    <div className="min-h-screen font-sans bg-slate-50 text-slate-800">
+      <header className="bg-white/90 shadow-md sticky top-0 z-40 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center"><Shield className="w-8 h-8 text-primary-500 mr-3 animate-bounce-in" /><h1 className="text-xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500">IV Torneig Padel Les Coves</h1></div>
