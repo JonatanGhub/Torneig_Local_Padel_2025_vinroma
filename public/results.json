@@ -31,4 +31,4 @@
     { "team1": "D2", "team2": "D4", "sets": [[6-4], [6-2], [null, null]] },
     { "team1": "D3", "team2": "D4", "sets": [[6, 1], [6, 4], [null, null]] }
   ]
-}
+} 
