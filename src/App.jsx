@@ -16,7 +16,7 @@ const initialTournamentData = {
     'Grup 2': [ { id: 'C5', name: 'Laura / Gemma' }, { id: 'C6', name: 'Carla / Patri' }, { id: 'C7', name: 'Jose A. / Gustau' }, { id: 'C8', name: 'Hugo / Guillem' } ],
   },
   '4ª': {
-    'Grup 1': [ { id: 'D1', name: 'Mariano / Jordi M.' }, { id: 'D2', name: 'Alma / Paula' }, { id: 'D3', name: 'Agnes / Ainoa' }, { id: 'D4', name: 'Alba / Leticia' } ],
+    'Grup 1': [ { id: 'D1', name: 'Mariano / Jordi M.' }, { id: 'D2', name: 'Alma / Paula' }, { id: 'D4', name: 'Agnes / Ainoa' }, { id: 'D3', name: 'Alba / Leticia' } ],
   },
 };
 
