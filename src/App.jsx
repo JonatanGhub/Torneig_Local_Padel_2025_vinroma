@@ -9,7 +9,7 @@ const initialTournamentData = {
   },
   '2ª': {
     'Grup 1': [ { id: 'B1', name: 'Xavi / Andres' }, { id: 'B2', name: 'Toni / Ricardo' }, { id: 'B3', name: 'Hugo / Fran' }, { id: 'B4', name: 'Nestor / Borja' } ],
-    'Grup 2': [ { id: 'B8', name: 'Juan / German' }, { id: 'B7', name: 'Iago / Carlos' }, { id: 'B5', name: 'Oscar / Jordi G.' }, { id: 'B6', name: 'Guillem / Hugo' } ],
+    'Grup 2': [ { id: 'B8', name: 'Juan / German' }, { id: 'B7', name: 'Iago / Carlos' }, { id: 'B5', name: 'Oscar / Jordi G.' }, { id: 'B6', name: 'Guillem / Hugo Beser' } ],
   },
   '3ª': {
     'Grup 1': [ { id: 'C1', name: 'Fran / Cesar' }, { id: 'C2', name: 'Robert / Carmelo' }, { id: 'C3', name: 'Alberto / Angel' }, { id: 'C4', name: 'Miguel T. / Joan' } ],
