@@ -31,7 +31,7 @@
     { "team1Id": "D1", "team2Id": "D4", "schedule": "Dimecres 16, 21:30" },
     { "team1Id": "C2", "team2Id": "C4", "schedule": "Dijous 17, 19:30" },
     { "team1Id": "B6", "team2Id": "B7", "schedule": "Dijous 17, 20:30" },
-    { "team1Id": "A2", "team2Id": "A3", "schedule": "Dilluns 21, 19:30" },
+    { "team1Id": "A2", "team2Id": "A3", "schedule": "Dilluns 22, 19:00" },
     { "team1Id": "C1", "team2Id": "C4", "schedule": "Dilluns 21, 20:30" },
     { "team1Id": "D1", "team2Id": "D3", "schedule": "Dilluns 21, 21:30" },
     { "team1Id": "C6", "team2Id": "C8", "schedule": "Dimarts 22, 20:00" },
