@@ -214,7 +214,7 @@ const FINAL_SCHEDULES = {
       { label: 'Semifinal 1 Consolació', date: 'Dilluns 28 juliol', time: '20:30' },
       { label: 'Semifinal 2 Consolació', date: 'Dimarts 29 juliol', time: '20:30' },
       { label: 'Semifinal 1', date: 'Dimecres 30', time: '20:30' },
-      // No hi ha semifinal 2 el dijous, només final
+      { label: 'Semifinal 2', date: 'Dissabte 19', time: '19:00' },
       { label: 'Final Consolació', date: 'Dimarts 5', time: '20:30' },
       { label: 'Final', date: 'Dijous 7', time: '20:30' }
     ]
