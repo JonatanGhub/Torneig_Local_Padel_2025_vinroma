@@ -201,38 +201,38 @@ const Group = ({ name, matches, standings }) => (
 const FINAL_SCHEDULES = {
   '3ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '19:00' },
-      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '19:00' },
-      { label: 'Semifinal 1', date: 'Miercoles 30', time: '19:00' },
-      { label: 'Semifinal 2', date: 'Jueves 31', time: '19:00' },
-      { label: 'Final Consolació', date: 'Lunes 4 agosto', time: '22:00' },
-      { label: 'Final', date: 'Miercoles 6', time: '22:00' }
+      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28 juliol', time: '19:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29 juliol', time: '19:00' },
+      { label: 'Semifinal 1', date: 'Dimecres 30', time: '19:00' },
+      { label: 'Semifinal 2', date: 'Dijous 31', time: '19:00' },
+      { label: 'Final Consolació', date: 'Dilluns 4 agost', time: '22:00' },
+      { label: 'Final', date: 'Dimecres 6', time: '22:00' }
     ]
   },
   '2ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '20:30' },
-      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '20:30' },
-      { label: 'Semifinal 1', date: 'Miercoles 30', time: '20:30' },
-      // No hay semifinal 2 el jueves, solo final
-      { label: 'Final Consolació', date: 'Martes 5', time: '20:30' },
-      { label: 'Final', date: 'Jueves 7', time: '20:30' }
+      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28 juliol', time: '20:30' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29 juliol', time: '20:30' },
+      { label: 'Semifinal 1', date: 'Dimecres 30', time: '20:30' },
+      // No hi ha semifinal 2 el dijous, només final
+      { label: 'Final Consolació', date: 'Dimarts 5', time: '20:30' },
+      { label: 'Final', date: 'Dijous 7', time: '20:30' }
     ]
   },
   '1ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '22:00' },
-      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '22:00' },
-      { label: 'Semifinal 1', date: 'Miercoles 30', time: '22:00' },
-      { label: 'Semifinal 2', date: 'Jueves 31', time: '22:00' },
-      { label: 'Final Consolació', date: 'Martes 5', time: '22:00' },
-      { label: 'Final', date: 'Viernes 8', time: '20:30' }
+      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28 juliol', time: '22:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29 juliol', time: '22:00' },
+      { label: 'Semifinal 1', date: 'Dimecres 30', time: '22:00' },
+      { label: 'Semifinal 2', date: 'Dijous 31', time: '22:00' },
+      { label: 'Final Consolació', date: 'Dimarts 5', time: '22:00' },
+      { label: 'Final', date: 'Divendres 8', time: '20:30' }
     ]
   },
   '4ª': {
     finals: [
-      { label: 'Final Consolació', date: 'Lunes 4 agosto', time: '20:30' },
-      { label: 'Final', date: 'Miercoles 6', time: '20:30' }
+      { label: 'Final Consolació', date: 'Dilluns 4 agost', time: '20:30' },
+      { label: 'Final', date: 'Dimecres 6', time: '20:30' }
     ]
   }
 };
