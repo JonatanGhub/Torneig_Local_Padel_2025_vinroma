@@ -198,6 +198,45 @@ const Group = ({ name, matches, standings }) => (
     </div>
 );
 
+const FINAL_SCHEDULES = {
+  '3ª': {
+    semifinals: [
+      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '19:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '19:00' },
+      { label: 'Semifinal 1', date: 'Miercoles 30', time: '19:00' },
+      { label: 'Semifinal 2', date: 'Jueves 31', time: '19:00' },
+      { label: 'Final Consolació', date: 'Lunes 4 agosto', time: '22:00' },
+      { label: 'Final', date: 'Miercoles 6', time: '22:00' }
+    ]
+  },
+  '2ª': {
+    semifinals: [
+      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '20:30' },
+      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '20:30' },
+      { label: 'Semifinal 1', date: 'Miercoles 30', time: '20:30' },
+      // No hay semifinal 2 el jueves, solo final
+      { label: 'Final Consolació', date: 'Martes 5', time: '20:30' },
+      { label: 'Final', date: 'Jueves 7', time: '20:30' }
+    ]
+  },
+  '1ª': {
+    semifinals: [
+      { label: 'Semifinal 1 Consolació', date: 'Lunes 28 julio', time: '22:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Martes 29 julio', time: '22:00' },
+      { label: 'Semifinal 1', date: 'Miercoles 30', time: '22:00' },
+      { label: 'Semifinal 2', date: 'Jueves 31', time: '22:00' },
+      { label: 'Final Consolació', date: 'Martes 5', time: '22:00' },
+      { label: 'Final', date: 'Viernes 8', time: '20:30' }
+    ]
+  },
+  '4ª': {
+    finals: [
+      { label: 'Final Consolació', date: 'Lunes 4 agosto', time: '20:30' },
+      { label: 'Final', date: 'Miercoles 6', time: '20:30' }
+    ]
+  }
+};
+
 const FinalsBracket = ({ categoryName, finalStandings }) => {
     const getTeamName = (group, position) => {
       let posText = `${position}`;
@@ -241,9 +280,61 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
         );
     }
     
+    const renderHorarios = () => {
+      const horarios = FINAL_SCHEDULES[categoryName];
+      if (!horarios) return null;
+      if (categoryName === '4ª') {
+        return (
+          <div className="mb-6">
+            <h5 className="font-semibold text-lg text-center text-primary-700 mb-2">Horaris Fase Final</h5>
+            <ul className="text-center text-slate-700 space-y-1">
+              {horarios.finals.map((h, i) => (
+                <li key={i}><b>{h.label}:</b> {h.date}, {h.time}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+      return (
+        <div className="mb-6">
+          <h5 className="font-semibold text-lg text-center text-primary-700 mb-2">Horaris Fase Final</h5>
+          <ul className="text-center text-slate-700 space-y-1">
+            {horarios.semifinals.map((h, i) => (
+              <li key={i}><b>{h.label}:</b> {h.date}, {h.time}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    // NUEVO: Bracket especial para 4ª categoría (solo final y final consolación)
+    if (categoryName === '4ª') {
+      return (
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8 animate-fade-in">
+          <h3 className="text-3xl font-bold text-slate-800 mb-8 text-center">Fase Final - {categoryName}</h3>
+          {renderHorarios()}
+          <div className="grid grid-cols-1 gap-y-12">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-xl font-semibold text-center mb-6 text-primary-600">Final</h4>
+              <div className="flex justify-center">
+                <BracketMatch team1={getTeamName('Grup 1', 1)} team2={getTeamName('Grup 1', 2)} />
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-xl font-semibold text-center mb-6 text-secondary-600">Final Consolació</h4>
+              <div className="flex justify-center">
+                <BracketMatch team1={getTeamName('Grup 1', 3)} team2={getTeamName('Grup 1', 4)} />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8 animate-fade-in">
             <h3 className="text-3xl font-bold text-slate-800 mb-8 text-center">Fase Final - {categoryName}</h3>
+            {renderHorarios()}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12">
                 <Bracket title="Quadre Principal" bracketType="main" />
                 <Bracket title="Quadre de Consolació" bracketType="consolation" />
