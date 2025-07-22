@@ -249,6 +249,20 @@ const FinalsBracket = ({ categoryName, finalStandings, finalPhaseResults }) => {
         if (!sets || !sets.some(s => s[0] !== null || s[1] !== null)) return null;
         return sets.filter(s => s[0] !== null && s[1] !== null).map(s => `${s[0]}-${s[1]}`).join(' / ');
     }
+    const getWinner = (sets, team1, team2) => {
+        if (!sets || !sets.some(s => s[0] !== null || s[1] !== null)) return null;
+        let team1SetsWon = 0;
+        let team2SetsWon = 0;
+        sets.forEach(set => {
+            if (set[0] !== null && set[1] !== null) {
+                if (set[0] > set[1]) team1SetsWon++;
+                else team2SetsWon++;
+            }
+        });
+        if (team1SetsWon > team2SetsWon) return team1;
+        if (team2SetsWon > team1SetsWon) return team2;
+        return null;
+    };
     const BracketMatch = ({ team1, team2, result }) => (
         <div className="flex flex-col justify-center w-48 text-sm">
             <div className="bg-slate-100 p-2 rounded-t-md border-b-0 h-10 flex items-center justify-center shadow-sm text-slate-700 font-medium">{team1}</div>
@@ -260,13 +274,21 @@ const FinalsBracket = ({ categoryName, finalStandings, finalPhaseResults }) => {
     const Bracket = ({ title, bracketType }) => {
         const isConsolation = bracketType === 'consolation';
         
-        const result_sf1 = getResultString(finalPhaseResults?.[bracketType]?.semifinal1?.sets);
-        const result_sf2 = getResultString(finalPhaseResults?.[bracketType]?.semifinal2?.sets);
-
         const team1_sf1 = isConsolation ? getTeamName('Grup 1', 3) : getTeamName('Grup 1', 1);
         const team2_sf1 = isConsolation ? getTeamName('Grup 2', 4) : getTeamName('Grup 2', 2);
         const team1_sf2 = isConsolation ? getTeamName('Grup 2', 3) : getTeamName('Grup 2', 1);
         const team2_sf2 = isConsolation ? getTeamName('Grup 1', 4) : getTeamName('Grup 1', 2);
+
+        const sets_sf1 = finalPhaseResults?.[bracketType]?.semifinal1?.sets;
+        const result_sf1 = getResultString(sets_sf1);
+        const winner_sf1 = getWinner(sets_sf1, team1_sf1, team2_sf1);
+
+        const sets_sf2 = finalPhaseResults?.[bracketType]?.semifinal2?.sets;
+        const result_sf2 = getResultString(sets_sf2);
+        const winner_sf2 = getWinner(sets_sf2, team1_sf2, team2_sf2);
+
+        const team1_final = winner_sf1 || `Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`;
+        const team2_final = winner_sf2 || `Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`;
 
         return (
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -282,7 +304,7 @@ const FinalsBracket = ({ categoryName, finalStandings, finalPhaseResults }) => {
                     </div>
                     <div className="w-px h-40 border-r-2 border-slate-300"></div>
                     <div className="flex items-center ml-2">
-                         <BracketMatch team1={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`} team2={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`} result={getResultString(finalPhaseResults?.[bracketType]?.final?.sets)} />
+                         <BracketMatch team1={team1_final} team2={team2_final} result={getResultString(finalPhaseResults?.[bracketType]?.final?.sets)} />
                     </div>
                 </div>
             </div>
