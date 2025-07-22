@@ -201,8 +201,8 @@ const Group = ({ name, matches, standings }) => (
 const FINAL_SCHEDULES = {
   '3ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Dilluns', time: '19:00' },
-      { label: 'Semifinal 2 Consolació', date: 'Dimarts', time: '19:00' },
+      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28', time: '19:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '19:00' },
       { label: 'Semifinal 1', date: 'Dimecres 30', time: '19:00' },
       { label: 'Semifinal 2', date: 'Dijous 31', time: '19:00' },
       { label: 'Final Consolació', date: 'Dilluns 4 agost', time: '22:00' },
@@ -237,7 +237,7 @@ const FINAL_SCHEDULES = {
   }
 };
 
-const FinalsBracket = ({ categoryName, finalStandings }) => {
+const FinalsBracket = ({ categoryName, finalStandings, finalPhaseResults }) => {
     const getTeamName = (group, position) => {
       let posText = `${position}`;
       if (position === 1 || position === 3) posText += 'er';
@@ -245,15 +245,24 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
       if (position === 4) posText += 't';
       return finalStandings?.[group]?.[position - 1]?.teamName || `${posText} Class. Grup ${group.slice(-1)}`;
     }
-    const BracketMatch = ({ team1, team2 }) => (
+    const getResultString = (sets) => {
+        if (!sets || !sets.some(s => s[0] !== null || s[1] !== null)) return null;
+        return sets.filter(s => s[0] !== null && s[1] !== null).map(s => `${s[0]}-${s[1]}`).join(' / ');
+    }
+    const BracketMatch = ({ team1, team2, result }) => (
         <div className="flex flex-col justify-center w-48 text-sm">
-            <div className="bg-slate-100 p-2 rounded-t-md border-b border-slate-200 h-10 flex items-center justify-center shadow-sm text-slate-700 font-medium">{team1}</div>
-            <div className="bg-slate-100 p-2 rounded-b-md h-10 flex items-center justify-center shadow-sm text-slate-700 font-medium">{team2}</div>
+            <div className="bg-slate-100 p-2 rounded-t-md border-b-0 h-10 flex items-center justify-center shadow-sm text-slate-700 font-medium">{team1}</div>
+            {result && <div className="text-center bg-white py-1 text-primary-600 font-bold border-x-2 border-slate-200">{result}</div>}
+            <div className="bg-slate-100 p-2 rounded-b-md border-t-0 h-10 flex items-center justify-center shadow-sm text-slate-700 font-medium">{team2}</div>
         </div>
     );
 
     const Bracket = ({ title, bracketType }) => {
         const isConsolation = bracketType === 'consolation';
+        
+        const result_sf1 = getResultString(finalPhaseResults?.[bracketType]?.semifinal1?.sets);
+        const result_sf2 = getResultString(finalPhaseResults?.[bracketType]?.semifinal2?.sets);
+
         const team1_sf1 = isConsolation ? getTeamName('Grup 1', 3) : getTeamName('Grup 1', 1);
         const team2_sf1 = isConsolation ? getTeamName('Grup 2', 4) : getTeamName('Grup 2', 2);
         const team1_sf2 = isConsolation ? getTeamName('Grup 2', 3) : getTeamName('Grup 2', 1);
@@ -264,8 +273,8 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
                 <h4 className={`text-xl font-semibold text-center mb-6 ${isConsolation ? 'text-secondary-600' : 'text-primary-600'}`}>{title}</h4>
                 <div className="flex justify-center items-center">
                     <div className="flex flex-col space-y-8">
-                        <BracketMatch team1={team1_sf1} team2={team2_sf1} />
-                        <BracketMatch team1={team1_sf2} team2={team2_sf2} />
+                        <BracketMatch team1={team1_sf1} team2={team2_sf1} result={result_sf1} />
+                        <BracketMatch team1={team1_sf2} team2={team2_sf2} result={result_sf2} />
                     </div>
                     <div className="flex flex-col justify-between items-center h-40 mx-2">
                         <div className="w-4 border-t-2 border-r-2 border-slate-300 h-1/2 rounded-tr-lg"></div>
@@ -273,7 +282,7 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
                     </div>
                     <div className="w-px h-40 border-r-2 border-slate-300"></div>
                     <div className="flex items-center ml-2">
-                         <BracketMatch team1={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`} team2={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`} />
+                         <BracketMatch team1={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}1`} team2={`Guanyador SF ${isConsolation ? 'Cons. ' : ''}2`} result={getResultString(finalPhaseResults?.[bracketType]?.final?.sets)} />
                     </div>
                 </div>
             </div>
@@ -309,6 +318,8 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
 
     // NUEVO: Bracket especial para 4ª categoría (solo final y final consolación)
     if (categoryName === '4ª') {
+      const finalResult = getResultString(finalPhaseResults?.['main']?.final?.sets);
+      const consolationResult = getResultString(finalPhaseResults?.['consolation']?.final?.sets);
       return (
         <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8 animate-fade-in">
           <h3 className="text-3xl font-bold text-slate-800 mb-8 text-center">Fase Final - {categoryName}</h3>
@@ -317,13 +328,13 @@ const FinalsBracket = ({ categoryName, finalStandings }) => {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h4 className="text-xl font-semibold text-center mb-6 text-primary-600">Final</h4>
               <div className="flex justify-center">
-                <BracketMatch team1={getTeamName('Grup 1', 1)} team2={getTeamName('Grup 1', 2)} />
+                <BracketMatch team1={getTeamName('Grup 1', 1)} team2={getTeamName('Grup 1', 2)} result={finalResult} />
               </div>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h4 className="text-xl font-semibold text-center mb-6 text-secondary-600">Final Consolació</h4>
               <div className="flex justify-center">
-                <BracketMatch team1={getTeamName('Grup 1', 3)} team2={getTeamName('Grup 1', 4)} />
+                <BracketMatch team1={getTeamName('Grup 1', 3)} team2={getTeamName('Grup 1', 4)} result={consolationResult} />
               </div>
             </div>
           </div>
@@ -382,12 +393,14 @@ export default function App() {
   });
   const [activeCategoryTab, setActiveCategoryTab] = useState('1ª');
   const [activeMainTab, setActiveMainTab] = useState('grups');
+  const [finalPhaseResults, setFinalPhaseResults] = useState(null);
 
   useEffect(() => {
     const fetchSchedules = fetch('/schedules.json').then(res => res.json()).catch(err => { console.error("Failed to fetch schedules:", err); return { schedules: [] }; });
-    const fetchResults = fetch('/results.json').then(res => res.json()).catch(err => { console.error("Failed to fetch results:", err); return { results: [] }; });
+    const fetchResults = fetch('/results.json').then(res => res.json()).catch(err => { console.error("Failed to fetch results:", err); return { results: [], finalPhaseResults: {} }; });
 
     Promise.all([fetchSchedules, fetchResults]).then(([schedulesData, resultsData]) => {
+      setFinalPhaseResults(resultsData.finalPhaseResults);
       setTournamentData(currentData => {
         const updatedData = JSON.parse(JSON.stringify(currentData));
         schedulesData.schedules.forEach(schedule => {
@@ -470,7 +483,7 @@ export default function App() {
       </header>
       <main className="container mx-auto p-4 md:p-6">
         {activeMainTab === 'grups' && (<div className="animate-fade-in"><div className="mb-6"><div className="flex space-x-1 bg-white p-1 rounded-lg shadow-md">{Object.keys(tournamentData).map((category) => (<button key={category} onClick={() => setActiveCategoryTab(category)} className={`w-full py-2.5 text-sm md:text-base font-medium leading-5 rounded-lg transition-colors duration-200 transform hover:scale-105 ${activeCategoryTab === category ? 'bg-primary-500 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-100'}`}>{category}</button>))}</div></div>{standingsByCategory[activeCategoryTab] && Object.entries(standingsByCategory[activeCategoryTab]).map(([groupName, standings]) => (<Group key={groupName} name={groupName} matches={tournamentData[activeCategoryTab][groupName].matches} standings={standings} />))}</div>)}
-        {activeMainTab === 'fasefinal' && (<div className="space-y-8 animate-fade-in">{Object.keys(tournamentData).map(category => (<FinalsBracket key={category} categoryName={category} finalStandings={finalStandings[category]} />))}</div>)}
+        {activeMainTab === 'fasefinal' && (<div className="space-y-8 animate-fade-in">{Object.keys(tournamentData).map(category => (<FinalsBracket key={category} categoryName={category} finalStandings={finalStandings[category]} finalPhaseResults={finalPhaseResults?.[category]} />))}</div>)}
         {activeMainTab === 'normativa' && (<NormativaPanel />)}
       </main>
     </div>
