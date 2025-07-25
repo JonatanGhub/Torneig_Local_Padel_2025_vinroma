@@ -83,7 +83,15 @@ const getStandings = (teams, matches) => {
 
     return Object.values(stats).sort((a, b) => {
         if (b.P !== a.P) return b.P - a.P;
-        
+
+        const setDiffA = a.SG - a.SP;
+        const setDiffB = b.SG - b.SP;
+        if (setDiffB !== setDiffA) return setDiffB - setDiffA;
+
+        const gameDiffA = a.JG - a.JP;
+        const gameDiffB = b.JG - b.JP;
+        if (gameDiffB !== gameDiffA) return gameDiffB - gameDiffA;
+
         const directMatch = matches.find(m => m.played && ((m.team1.id === a.teamId && m.team2.id === b.teamId) || (m.team1.id === b.teamId && m.team2.id === a.teamId)));
         if (directMatch) {
             let aSetsWon = 0;
@@ -102,13 +110,7 @@ const getStandings = (teams, matches) => {
             if (bSetsWon > aSetsWon) return 1;
         }
 
-        const setDiffA = a.SG - a.SP;
-        const setDiffB = b.SG - b.SP;
-        if (setDiffB !== setDiffA) return setDiffB - setDiffA;
-
-        const gameDiffA = a.JG - a.JP;
-        const gameDiffB = b.JG - b.JP;
-        return gameDiffB - gameDiffA;
+        return 0;
     });
 };
 
@@ -405,7 +407,7 @@ const NormativaPanel = () => (
                 <p><strong>Inici del torneig:</strong> Dimarts, 1 de juliol de 2025.</p>
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
                 <p><strong>Format dels partits:</strong> Fase de grups al millor de 3 sets (tercer súper tie-break a 10 punts). Fase final a 3 sets convencionals. El joc exterior serà permès si s'acorda entre les parelles abans de l'inici del partit.</p>
-                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per partit guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
+                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per partit guanyat), 2º Diferència de sets (guanyats - perduts), 3º Diferència de jocs, 4º En cas de doble empat a tot, resultat de l'enfrontament directe.</p>
                 <div className="mt-6 bg-red-100 border-l-4 border-red-500 p-4 rounded-r-lg">
                     <div className="flex">
                         <div className="py-1"><AlertTriangle className="h-6 w-6 text-red-500 mr-3" /></div>
