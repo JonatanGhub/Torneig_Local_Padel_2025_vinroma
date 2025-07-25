@@ -215,18 +215,18 @@ const Group = ({ name, matches, standings }) => (
 const FINAL_SCHEDULES = {
   '3ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28', time: '19:00' },
-      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '19:00' },
+      { label: 'Semifinal 1 Consolació', date: 'Dimarts 29', time: '19:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '20:30' },
       { label: 'Semifinal 1', date: 'Dimecres 30', time: '19:00' },
       { label: 'Semifinal 2', date: 'Dijous 31', time: '19:00' },
-      { label: 'Final Consolació', date: 'Dilluns 4 agost', time: '22:00' },
+      { label: 'Final Consolació', date: 'Dilluns 4', time: '20:30' },
       { label: 'Final', date: 'Dimecres 6', time: '22:00' }
     ]
   },
   '2ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28', time: '20:30' },
-      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '20:30' },
+      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28', time: '19:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '22:00' },
       { label: 'Semifinal 1', date: 'Dimecres 30', time: '20:30' },
       { label: 'Semifinal 2', date: 'Dissabte 19', time: '19:00' },
       { label: 'Final Consolació', date: 'Dimarts 5', time: '20:30' },
@@ -235,18 +235,18 @@ const FINAL_SCHEDULES = {
   },
   '1ª': {
     semifinals: [
-      { label: 'Semifinal 1 Consolació', date: 'Dilluns 28', time: '22:00' },
-      { label: 'Semifinal 2 Consolació', date: 'Dimarts 29', time: '22:00' },
-      { label: 'Semifinal 1', date: 'Dimecres 30', time: '22:00' },
-      { label: 'Semifinal 2', date: 'Dijous 31', time: '22:00' },
+      { label: 'Semifinal 1 Consolació', date: 'Dimecres 30', time: '22:00' },
+      { label: 'Semifinal 2 Consolació', date: 'Dijous 31', time: '22:00' },
+      { label: 'Semifinal 1', date: 'Divendres 1', time: '19:00' },
+      { label: 'Semifinal 2', date: 'Divendres 1', time: '20:30' },
       { label: 'Final Consolació', date: 'Dimarts 5', time: '22:00' },
       { label: 'Final', date: 'Divendres 8', time: '20:30' }
     ]
   },
   '4ª': {
     finals: [
-      { label: 'Final Consolació', date: 'Dilluns 4', time: '20:30' },
-      { label: 'Final', date: 'Dimecres 6', time: '20:30' }
+      { label: 'Final Consolació', date: 'Dijous 31', time: '20:30' },
+      { label: 'Final', date: 'Diumenge 27', time: '19:00' }
     ]
   }
 };
