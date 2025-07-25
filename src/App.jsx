@@ -68,8 +68,12 @@ const getStandings = (teams, matches) => {
                 }
             });
 
-            team1Stats.P += team1SetsWon;
-            team2Stats.P += team2SetsWon;
+            if (team1SetsWon > team2SetsWon) {
+                team1Stats.P += 1;
+            } else if (team2SetsWon > team1SetsWon) {
+                team2Stats.P += 1;
+            }
+
             team1Stats.SG += team1SetsWon;
             team1Stats.SP += team2SetsWon;
             team2Stats.SG += team2SetsWon;
@@ -79,21 +83,29 @@ const getStandings = (teams, matches) => {
 
     return Object.values(stats).sort((a, b) => {
         if (b.P !== a.P) return b.P - a.P;
+        
         const directMatch = matches.find(m => m.played && ((m.team1.id === a.teamId && m.team2.id === b.teamId) || (m.team1.id === b.teamId && m.team2.id === a.teamId)));
         if (directMatch) {
-            let aSets = 0;
+            let aSetsWon = 0;
+            let bSetsWon = 0;
             directMatch.sets.forEach(set => {
                 if (set[0] !== null && set[1] !== null) {
-                    if (directMatch.team1.id === a.teamId && set[0] > set[1]) aSets++;
-                    if (directMatch.team2.id === a.teamId && set[1] > set[0]) aSets++;
+                    const aIsTeam1 = directMatch.team1.id === a.teamId;
+                    if ((aIsTeam1 && set[0] > set[1]) || (!aIsTeam1 && set[1] > set[0])) {
+                        aSetsWon++;
+                    } else {
+                        bSetsWon++;
+                    }
                 }
             });
-            if (aSets > 1) return -1;
-            if (aSets < 1) return 1;
+            if (aSetsWon > bSetsWon) return -1;
+            if (bSetsWon > aSetsWon) return 1;
         }
+
         const setDiffA = a.SG - a.SP;
         const setDiffB = b.SG - b.SP;
         if (setDiffB !== setDiffA) return setDiffB - setDiffA;
+
         const gameDiffA = a.JG - a.JP;
         const gameDiffB = b.JG - b.JP;
         return gameDiffB - gameDiffA;
@@ -393,7 +405,7 @@ const NormativaPanel = () => (
                 <p><strong>Inici del torneig:</strong> Dimarts, 1 de juliol de 2025.</p>
                 <p><strong>Horari de joc:</strong> De dilluns a dijous, de 19:30 a 22:30. Es jugaran 3 enfrontaments per dia.</p>
                 <p><strong>Format dels partits:</strong> Fase de grups al millor de 3 sets (tercer súper tie-break a 10 punts). Fase final a 3 sets convencionals. El joc exterior serà permès si s'acorda entre les parelles abans de l'inici del partit.</p>
-                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per set guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
+                <p><strong>Sistema de puntuació i desempat:</strong> La classificació s'ordenarà segons: 1º Punts (1 punt per partit guanyat), 2º En cas d'empat entre dues parelles, resultat de l'enfrontament directe, 3º En cas de triple empat, diferència de sets (guanyats - perduts), 4º Diferència de jocs.</p>
                 <div className="mt-6 bg-red-100 border-l-4 border-red-500 p-4 rounded-r-lg">
                     <div className="flex">
                         <div className="py-1"><AlertTriangle className="h-6 w-6 text-red-500 mr-3" /></div>
