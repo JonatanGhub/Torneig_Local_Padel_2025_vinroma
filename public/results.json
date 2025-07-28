@@ -33,7 +33,7 @@
     { "team1": "C5", "team2": "C6", "sets": [[4, 6], [3, 6], [null, null]] },
     { "team1": "C5", "team2": "C7", "sets": [[3,6], [6,7], [null, null]] },
     { "team1": "C5", "team2": "C8", "sets": [[3,6], [3,6], [null, null]] },
-    { "team1": "C6", "team2": "C7", "sets": [[null, null], [null, null], [null, null]] },
+    { "team1": "C6", "team2": "C7", "sets": [[2,6], [4,6], [null, null]] },
     { "team1": "C6", "team2": "C8", "sets": [[1,6], [1,6], [null, null]] },
     { "team1": "C7", "team2": "C8", "sets": [[6, 7], [5, 7], [null, null]] },
     { "team1": "D1", "team2": "D2", "sets": [[6, 3], [2, 6], [5, 10]] },
