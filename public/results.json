@@ -48,7 +48,7 @@
       "main": {
         "semifinal1": { "sets": [[1,6], [0,6], [null, null]] },
         "semifinal2": { "sets": [[6,1], [6,4], [null, null]] },
-        "final": { "sets": [[null, null], [null, null], [null, null]] }
+        "final": { "sets": [[0,6], [6,4], [6,2]] }
       },
       "consolation": {
         "semifinal1": { "sets": [[7,6], [1,6], [6,3]] },
