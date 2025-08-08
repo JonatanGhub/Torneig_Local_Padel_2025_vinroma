@@ -46,13 +46,13 @@
   "finalPhaseResults": {
     "1ª": {
       "main": {
-        "semifinal1": { "sets": [[null, null], [null, null], [null, null]] },
-        "semifinal2": { "sets": [[null, null], [null, null], [null, null]] },
+        "semifinal1": { "sets": [[1,6], [0,6], [null, null]] },
+        "semifinal2": { "sets": [[6,1], [6,4], [null, null]] },
         "final": { "sets": [[null, null], [null, null], [null, null]] }
       },
       "consolation": {
-        "semifinal1": { "sets": [[null, null], [null, null], [null, null]] },
-        "semifinal2": { "sets": [[null, null], [null, null], [null, null]] },
+        "semifinal1": { "sets": [[7,6], [1,6], [6,3]] },
+        "semifinal2": { "sets": [[6,3], [6,3], [null, null]] },
         "final": { "sets": [[null, null], [null, null], [null, null]] }
       }
     },
@@ -70,13 +70,13 @@
     },
     "3ª": {
       "main": {
-        "semifinal1": { "sets": [[null, null], [null, null], [null, null]] },
-        "semifinal2": { "sets": [[null, null], [null, null], [null, null]] },
+        "semifinal1": { "sets": [[6,2], [4,6], [6,3]] },
+        "semifinal2": { "sets": [[6,2], [6,4], [null, null]] },
         "final": { "sets": [[null, null], [null, null], [null, null]] }
       },
       "consolation": {
-        "semifinal1": { "sets": [[null, null], [null, null], [null, null]] },
-        "semifinal2": { "sets": [[null, null], [null, null], [null, null]] },
+        "semifinal1": { "sets": [[6,2], [6,1], [null, null]] },
+        "semifinal2": { "sets": [[3,6], [1,6], [null, null]] },
         "final": { "sets": [[null, null], [null, null], [null, null]] }
       }
     },
